@@ -117,94 +117,113 @@
     </div>
   </div>
 
-<script>
-  // ---------- Game list (embeds) ----------
-  let GAMES = [];
+  <script>
+    // ---------- Game list (embeds) ----------
+    let GAMES = [];
 
-  const grid = document.getElementById('grid');
-  const q = document.getElementById('q');
-  const modal = document.getElementById('modal');
-  const gameFrame = document.getElementById('gameFrame');
-  const closeModal = document.getElementById('closeModal');
+    const grid = document.getElementById('grid');
+    const q = document.getElementById('q');
+    const modal = document.getElementById('modal');
+    const gameFrame = document.getElementById('gameFrame');
+    const closeModal = document.getElementById('closeModal');
 
-  function createCard(game) {
-    const el = document.createElement('article');
-    el.className = 'card';
+    function createCard(game){
+      const el = document.createElement('article');
+      el.className = 'card';
 
-    const img = document.createElement('img');
-    img.className = 'thumb';
-    img.src = game.thumb;
-    img.alt = game.title;
+      const img = document.createElement('img');
+      img.className = 'thumb';
+      img.src = game.thumb;
+      img.alt = game.title;
 
-    const meta = document.createElement('div'); 
-    meta.className = 'meta';
-    const h3 = document.createElement('h3'); 
-    h3.textContent = game.title;
-    const btn = document.createElement('button'); 
-    btn.className = 'play'; 
-    btn.textContent = 'Play';
+      const meta = document.createElement('div'); meta.className = 'meta';
+      const h3 = document.createElement('h3'); h3.textContent = game.title;
+      const btn = document.createElement('button'); btn.className = 'play'; btn.textContent = 'Play';
 
-    // Open game in modal
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      openGame(game);
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openGame(game);
+      });
+
+      meta.appendChild(h3); meta.appendChild(btn);
+      el.appendChild(img); el.appendChild(meta);
+
+      // 3D tilt
+      el.addEventListener('mousemove', (ev) => {
+        const rect = el.getBoundingClientRect();
+        const cx = rect.left + rect.width/2; const cy = rect.top + rect.height/2;
+        const dx = ev.clientX - cx; const dy = ev.clientY - cy;
+        const rx = (dy/rect.height)*8; const ry = -(dx/rect.width)*8;
+        el.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(6px)`;
+      });
+      el.addEventListener('mouseleave', () => { el.style.transform = ''; });
+
+      // prevent white flash by ensuring pseudo stays dark (handled in CSS)
+      return el;
+    }
+
+    function render(filter=''){
+      grid.innerHTML = '';
+      GAMES.filter(g => g.title.toLowerCase().includes(filter.toLowerCase())).forEach(g => grid.appendChild(createCard(g)));
+    }
+
+    function openGame(game){
+      // set src then show modal. Some sites block iframe — show fallback link in console.
+      gameFrame.src = game.src;
+      modal.style.display = 'flex';
+    }
+
+    closeModal.addEventListener('click', () => {
+      modal.style.display = 'none';
+      gameFrame.src = '';
     });
 
-    meta.appendChild(h3); 
-    meta.appendChild(btn);
-    el.appendChild(img); 
-    el.appendChild(meta);
+    q.addEventListener('input', () => render(q.value));
 
-    // 3D tilt effect on card hover
-    el.addEventListener('mousemove', (ev) => {
-      const rect = el.getBoundingClientRect();
-      const cx = rect.left + rect.width / 2; 
-      const cy = rect.top + rect.height / 2;
-      const dx = ev.clientX - cx; 
-      const dy = ev.clientY - cy;
-      const rx = (dy / rect.height) * 8; 
-      const ry = -(dx / rect.width) * 8;
-      el.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(6px)`;
-    });
-    
-    el.addEventListener('mouseleave', () => { 
-      el.style.transform = ''; 
-    });
+    // Load external JSON
+    type="application/json";
+    fetch('arcade_data.json')
+      .then(r => r.json())
+      .then(data => {
+        GAMES = data.games;
+        MESSAGES = data.messages;
+        document.getElementById('motd').textContent = MESSAGES[Math.floor(Math.random()*MESSAGES.length)];
+        render();
+      })
+      .catch(err => console.error('JSON load error', err));
 
-    return el;
-  }
+    // ---------- Random top‑bar message ----------
+    let MESSAGES = [];
+    document.getElementById('motd').textContent = MESSAGES[Math.floor(Math.random()*MESSAGES.length)];
 
-  function render(filter = '') {
-    grid.innerHTML = '';
-    GAMES.filter(g => g.title.toLowerCase().includes(filter.toLowerCase()))
-      .forEach(g => grid.appendChild(createCard(g)));
-  }
+    // ---------- Particles (lightweight) ----------
+    const canvas = document.getElementById('particles');
+    const ctx = canvas.getContext('2d');
+    function resize(){ canvas.width = innerWidth; canvas.height = innerHeight; }
+    addEventListener('resize', resize); resize();
 
-  function openGame(game) {
-    gameFrame.src = game.src;
-    modal.style.display = 'flex';
-  }
+    const particles = [];
+    const count = Math.max(10, Math.floor((canvas.width*canvas.height)/70000));
+    for(let i=0;i<count;i++) particles.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, r: 0.5+Math.random()*2, vx:(Math.random()-0.5)*0.25, vy:(Math.random()-0.5)*0.25, hue: Math.floor(Math.random()*360) });
 
-  // Close modal on button click
-  closeModal.addEventListener('click', () => {
-    modal.style.display = 'none';
-    gameFrame.src = '';
-  });
+    function step(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      // subtle bg overlay
+      const g = ctx.createLinearGradient(0,0,canvas.width,canvas.height);
+      g.addColorStop(0, 'rgba(2,6,23,0.08)'); g.addColorStop(1, 'rgba(10,8,15,0.08)');
+      ctx.fillStyle = g; ctx.fillRect(0,0,canvas.width,canvas.height);
 
-  // Search functionality
-  q.addEventListener('input', () => render(q.value));
+      particles.forEach(p=>{
+        p.x += p.vx; p.y += p.vy;
+        if(p.x<-10) p.x = canvas.width+10; if(p.x>canvas.width+10) p.x=-10;
+        if(p.y<-10) p.y = canvas.height+10; if(p.y>canvas.height+10) p.y=-10;
+        ctx.beginPath(); ctx.fillStyle = `hsla(${p.hue},80%,60%,0.10)`; ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
+      });
 
-  // Fetching the game data (arcade_data.json) from JSDelivr
-  fetch('https://cdn.jsdelivr.net/gh/yourusername/yourrepo@main/arcade_data.json')
-    .then(r => r.json())
-    .then(data => {
-      GAMES = data.games;
-      const MESSAGES = data.messages;
-      document.getElementById('motd').textContent = MESSAGES[Math.floor(Math.random() * MESSAGES.length)];
-      render();
-    })
-    .catch(err => console.error('Error loading games data', err));
+      requestAnimationFrame(step);
+    }
+    step();
 
-</script>
+  </script>
 </body>
 </html>
