@@ -1,25 +1,26 @@
 {
   "games": [
     {
-      "title": "R0blox",
+      "title": "Roblox",
       "src": "https://raw.githubusercontent.com/ten8mystery/htmlgamesholder-/refs/heads/main/roblox.html",
       "thumb": "https://static0.polygonimages.com/wordpress/wp-content/uploads/chorus/uploads/chorus_asset/file/22363918/roblox.jpeg"
     },
+    {
+      "title": "Hollow Knight",
+      "src": "https://cdn.jsdelivr.net/gh/gn-math/html@main/468.html",
+      "thumb": "https://images.squarespace-cdn.com/content/v1/606d4deb4db8c15ea53b3624/1618824875786-3V9HT8BLB1L5PEEJC6ZQ/124.jpg"
+    },
+    {
+      "title": "Geometry Dash Lite",
+      "src": "https://cdn.jsdelivr.net/gh/gn-math/html@main/27.html",
+      "thumb": "https://static.wikia.nocookie.net/geometry-dash/images/f/f7/StereoMadness.png"
+    },
+
     {
       "title": "Run 3",
       "src": "https://cdn.jsdelivr.net/gh/gn-math/html@main/177.html",
       "thumb": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlEIB4BKRwQhBZENGwoA4lZtd4IoatQ7WvMQ&s"
     },
-    {
-      "title": "Geometry Dash Lite",
-      "src": "https://cdn.jsdelivr.net/gh/gn-math/html@main/27.html",
-      "thumb": "https://static.wikia.nocookie.net/geometry-dash/images/f/f7/StereoMadness.png/revision/latest?cb=20170706225311"
-    },
-    {
-      "title": "Snake",
-      "src": "https://playsnake.org/",
-      "thumb": "https://via.placeholder.com/640x360?text=Snake"
-    }
   ],
 
   "messages": [
