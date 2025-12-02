@@ -6,6 +6,11 @@
       "thumb": "https://static0.polygonimages.com/wordpress/wp-content/uploads/chorus/uploads/chorus_asset/file/22363918/roblox.jpeg"
     },
     {
+      "title": "Fortnite",
+      "src": "https://raw.githubusercontent.com/ten8mystery/htmlgamesholder-/refs/heads/main/forthtml.html",
+      "thumb": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6i0wwFmBp6gwwdZyqpHMzkmrKh_TFCS4_Og&s"
+    },
+    {
       "title": "Hollow Knight",
       "src": "https://raw.githubusercontent.com/Belcrafting/Hollow-Knight-HTML-port-/refs/heads/main/Hollow%20Knight.html",
       "thumb": "https://images.squarespace-cdn.com/content/v1/606d4deb4db8c15ea53b3624/1618824875786-3V9HT8BLB1L5PEEJC6ZQ/124.jpg"
@@ -189,6 +194,31 @@
       "title": "Subway Surfers: Barcelona",
       "src": "https://cdn.jsdelivr.net/gh/gn-math/html@main/131.html",
       "thumb": "https://cdn.jsdelivr.net/gh/gn-math/covers@main/131.png"
+    },
+   {
+      "title": "Bad Parenting 1",
+      "src": "https://cdn.jsdelivr.net/gh/gn-math/html@main/166.html",
+      "thumb": "https://cdn.jsdelivr.net/gh/gn-math/covers@main/166.png"
+    },
+   {
+      "title": "Half Life",
+      "src": "https://cdn.jsdelivr.net/gh/gn-math/html@main/262.html",
+      "thumb": "https://cdn.jsdelivr.net/gh/gn-math/covers@main/262.png"
+    },
+   {
+      "title": "Clash of Vikings",
+      "src": "https://cdn.jsdelivr.net/gh/gn-math/html@main/545.html",
+      "thumb": "https://cdn.jsdelivr.net/gh/gn-math/covers@main/545.png"
+    },
+   {
+      "title": "Class of '09",
+      "src": "https://cdn.jsdelivr.net/gh/gn-math/html@main/259.html",
+      "thumb": "https://cdn.jsdelivr.net/gh/gn-math/covers@main/259.png"
+    },
+   {
+      "title": "2048",
+      "src": "https://raw.githubusercontent.com/ten8mystery/htmlgamesholder-/refs/heads/main/2048html.html",
+      "thumb": "https://www.mathsisfun.com/games/images/2048.png"
     }
   ]
 }
