@@ -131,13 +131,9 @@
   transition: transform 160ms;
 }
 
-.card .play:hover {
-  transform: translateY(-4px) scale(1.03);
-}
-
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); /* Change auto-fit to auto-fill */
   gap: 22px;
   max-width: 1200px;
   margin: 36px auto;
