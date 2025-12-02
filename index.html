@@ -193,14 +193,27 @@
   will-change: transform, box-shadow, opacity;
   transform-style: preserve-3d;
   backface-visibility: hidden;
-  max-width: 100%; /* Ensure cards are constrained within their grid */
+  max-width: 100%; /* Ensure cards stay within grid container */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+  z-index: 0; /* Keep card order in place */
 }
 
-/* Hover Effect */
+/* Hover Effect (make sure scaling is subtle and not too big) */
 .card:hover {
-  transform: translateY(-8px) scale(1.03); /* Smaller scale to avoid full screen */
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 0 0 30px hsla(var(--accent2), 0.2);
-  background: rgba(8, 9, 12, 0.95); /* Darken background on hover */
+  transform: translateY(-5px) scale(1.02); /* Slight upward movement & smaller scale */
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 0 0 30px hsla(var(--accent2), 0.2); /* Enhanced shadow */
+  background: rgba(8, 9, 12, 0.95); /* Darken background */
+}
+
+/* ---------- Grid Layout (ensure responsive behavior) ---------- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* Responsive grid layout */
+  gap: 26px;
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+  z-index: 5;
 }
 
 /* ---------- Card Content (meta and play button) ---------- */
