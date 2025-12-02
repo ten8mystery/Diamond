@@ -19,7 +19,6 @@
     html,body{height:100%;margin:0;background:var(--bg);color:#e6eef8;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial}
 
     /* ---------- Animated background canvas (particles) ---------- */
-    /* place canvas behind everything to avoid repainting issues during scroll */
     canvas#particles{position:fixed;inset:0;z-index:-2;pointer-events:none;will-change:transform}
 
     /* ---------- Moving orbs ---------- */
@@ -60,14 +59,6 @@
     .card .play{display:inline-block;padding:10px 14px;border-radius:10px;border:none;color:white;background:linear-gradient(90deg,hsl(var(--accent1)),hsl(var(--accent2)));box-shadow:0 10px 30px hsla(var(--accent1),0.18);cursor:pointer;transition:transform 160ms}
     .card .play:hover{transform:translateY(-4px) scale(1.03)}
 
-    /* prevent white/rainbow :hover flash by overriding pseudo-elements */
-    .card::before,.card::after{content:'';position:absolute;inset:0;border-radius:14px;pointer-events:none;transition:opacity .25s, filter .25s}
-    .card::before{background:linear-gradient(90deg, rgba(0,0,0,0.25), rgba(0,0,0,0.15));mix-blend-mode:normal;opacity:1}
-    .card:hover::before{opacity:1;filter:brightness(0.9)}
-
-    /* keep hover dark */
-    .card:hover{transform:translateY(-8px) scale(1.03);box-shadow:0 30px 60px rgba(0,0,0,0.6),0 0 30px hsla(var(--accent2),0.18)}
-
     /* small screens */
     @media (max-width:640px){.hero h2{font-size:26px}.search{width:92%}}
     body::before{content:'';position:fixed;inset:0;z-index:-3;background:var(--bg);}
@@ -93,8 +84,10 @@
       </div>
     </div>
 
-    <div class="pill" id="versionTag">v1.0</div>
-    <div id="motd" style="font-size:13px;color:rgba(230,238,248,0.85);margin-left:8px;"></div>
+    <div class="right">
+      <button id="gamesTab" style="padding: 10px 20px; font-size: 16px; border: none; background: var(--accent1); color: white; border-radius: 8px;" class="active">Games</button>
+      <button id="appsTab" style="padding: 10px 20px; font-size: 16px; border: none; background: var(--accent2); color: white; border-radius: 8px;">Apps</button>
+    </div>
   </div>
 
   <main>
@@ -102,7 +95,7 @@
       <h2>Diamond — Upgraded Gaming</h2>
       <p>Jump into any game, online, for free!</p>
       <div class="search-wrap">
-        <div class="search"><input id="q" placeholder="Search games..." /></div>
+        <div class="search"><input id="q" placeholder="Search..." /></div>
       </div>
     </section>
 
@@ -120,31 +113,56 @@
   </div>
 
 <script>
-  // ---------- Game list (embeds) ----------
+  // ---------- Game and App lists (embeds) ----------
   let GAMES = [];
+  let APPS = [];
 
   const grid = document.getElementById('grid');
   const q = document.getElementById('q');
   const modal = document.getElementById('modal');
   const gameFrame = document.getElementById('gameFrame');
   const closeModal = document.getElementById('closeModal');
+  const gamesTab = document.getElementById('gamesTab');
+  const appsTab = document.getElementById('appsTab');
 
-  function createCard(game){
+  // Load Games data
+  function loadGames() {
+    fetch('arcade_data.json')
+      .then(r => r.json())
+      .then(data => {
+        GAMES = data.games;
+        render(GAMES);
+      })
+      .catch(err => console.error('JSON load error', err));
+  }
+
+  // Load Apps data
+  function loadApps() {
+    fetch('apps_data.json')
+      .then(r => r.json())
+      .then(data => {
+        APPS = data.apps;
+        render(APPS);
+      })
+      .catch(err => console.error('JSON load error', err));
+  }
+
+  function createCard(item) {
     const el = document.createElement('article');
     el.className = 'card';
 
     const img = document.createElement('img');
     img.className = 'thumb';
-    img.src = game.thumb;
-    img.alt = game.title;
+    img.src = item.thumb;
+    img.alt = item.title;
 
     const meta = document.createElement('div'); meta.className = 'meta';
-    const h3 = document.createElement('h3'); h3.textContent = game.title;
+    const h3 = document.createElement('h3'); h3.textContent = item.title;
     const btn = document.createElement('button'); btn.className = 'play'; btn.textContent = 'Play';
 
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
-      openGame(game);
+      openItem(item);
     });
 
     meta.appendChild(h3); meta.appendChild(btn);
@@ -153,29 +171,27 @@
     return el;
   }
 
-  function render(filter=''){
+  function render(items) {
     grid.innerHTML = '';
-    GAMES.filter(g => g.title.toLowerCase().includes(filter.toLowerCase())).forEach(g => grid.appendChild(createCard(g)));
+    items.filter(item => item.title.toLowerCase().includes(q.value.toLowerCase())).forEach(item => grid.appendChild(createCard(item)));
   }
 
-  function openGame(game){
-    // Fetch the raw HTML file from JSDelivr
-    fetch(game.src)
+  function openItem(item) {
+    fetch(item.src)
       .then(response => response.text())
       .then(htmlContent => {
-        // Inject the raw HTML content into the iframe
         gameFrame.contentDocument.open();
         gameFrame.contentDocument.write(htmlContent);
         gameFrame.contentDocument.close();
         modal.style.display = 'flex';
       })
       .catch(error => {
-        console.error('Error loading game content:', error);
+        console.error('Error loading item content:', error);
         gameFrame.contentDocument.open();
         gameFrame.contentDocument.write(`
           <div style="padding: 20px; color: white; background: #b91c1c; text-align: center; font-family: sans-serif; border-radius: 8px;">
-            <h2 style="margin-top: 0; color: white;">🛑 Error Loading Game 🛑</h2>
-            <p>Could not load game content. This usually happens when the host server sends the wrong file type.</p>
+            <h2 style="margin-top: 0; color: white;">🛑 Error Loading Item 🛑</h2>
+            <p>Could not load content. This usually happens when the host server sends the wrong file type.</p>
           </div>
         `);
         gameFrame.contentDocument.close();
@@ -187,17 +203,30 @@
     gameFrame.src = '';
   });
 
-  q.addEventListener('input', () => render(q.value));
+  q.addEventListener('input', () => {
+    if (gamesTab.classList.contains('active')) {
+      render(GAMES);
+    } else if (appsTab.classList.contains('active')) {
+      render(APPS);
+    }
+  });
 
-  // Load external JSON
-  fetch('arcade_data.json')
-    .then(r => r.json())
-    .then(data => {
-      GAMES = data.games;
-      render();
-    })
-    .catch(err => console.error('JSON load error', err));
+  // Tab Switch Functionality
+  gamesTab.addEventListener('click', () => {
+    gamesTab.classList.add('active');
+    appsTab.classList.remove('active');
+    loadGames();
+  });
 
+  appsTab.addEventListener('click', () => {
+    appsTab.classList.add('active');
+    gamesTab.classList.remove('active');
+    loadApps();
+  });
+
+  // Initialize with Games Tab Active
+  gamesTab.classList.add('active');
+  loadGames();
 </script>
 </body>
 </html>
