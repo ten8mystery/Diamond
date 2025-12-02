@@ -185,7 +185,6 @@
   position: relative;
   overflow: hidden;
   border-radius: 16px;
-  padding: 16px;
   background: rgba(8, 9, 12, 0.9);
   border: 1px solid rgba(255, 255, 255, 0.05);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
@@ -193,11 +192,29 @@
   will-change: transform, box-shadow, opacity;
   transform-style: preserve-3d;
   backface-visibility: hidden;
-  height: auto; /* Ensure no height stretching */
-  width: 100%; /* Allow the card to fill the container without stretching */
-  max-width: 100%; /* Don't exceed the width of the container */
-  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
-  z-index: 0; /* Ensure card order stays intact */
+  height: auto;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column; /* Make sure content stacks properly */
+  justify-content: space-between;
+}
+
+/* Maintain consistent aspect ratio (16:9) */
+.card::before {
+  content: '';
+  display: block;
+  padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+  width: 100%;
+}
+
+.card .thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensure image doesn't stretch */
+  border-radius: 16px;
 }
 
 /* Hover Effect */
@@ -223,6 +240,8 @@
 .card .meta {
   padding: 12px 8px;
   text-align: center;
+  background: rgba(8, 9, 12, 0.9); /* Ensure meta content has a consistent background */
+  border-radius: 0 0 16px 16px;
 }
 
 .card h3 {
