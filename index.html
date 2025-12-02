@@ -216,6 +216,7 @@
       padding: 0 18px;
       z-index: 5;
       position: relative;
+      min-height: 500px; /* Prevent collapsing grid */
     }
 
     /* ---------- Card ---------- */
@@ -228,12 +229,16 @@
       border: 1px solid rgba(255, 255, 255, 0.03);
       box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
       transition: transform 260ms cubic-bezier(.2, .9, .2, 1), box-shadow 260ms;
-      will-change: transform, box-shadow, opacity;
-      transform-style: preserve-3d;
+      will-change: transform, box-shadow;
+      transform
+            transform-style: preserve-3d;
       backface-visibility: hidden;
-      width: 240px; /* Fixed width */
       height: 350px; /* Fixed height */
+      width: 240px; /* Fixed width */
       margin: 0 auto; /* Centering the card */
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     .card .thumb {
@@ -270,16 +275,43 @@
       transform: translateY(-4px) scale(1.03);
     }
 
-    /* ---------- Centering the matching card on search ---------- */
-    .card.matching {
-      position: absolute;  /* Absolute positioning of matching card */
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%); /* Center the card */
-      z-index: 10;
+    /* Prevent white/rainbow :hover flash by overriding pseudo-elements */
+    .card::before, .card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 14px;
+      pointer-events: none;
+      transition: opacity .25s, filter .25s;
+    }
+    .card::before {
+      background: linear-gradient(90deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.15));
+      mix-blend-mode: normal;
+      opacity: 1;
+    }
+    .card:hover::before {
+      opacity: 1;
+      filter: brightness(0.9);
     }
 
-    /* ---------- Hide other cards when searching ---------- */
+    /* Keep hover dark */
+    .card:hover {
+      transform: translateY(-8px) scale(1.03);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), 0 0 30px hsla(var(--accent2), 0.18);
+    }
+
+    /* Centered matching card */
+    .card.matching {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 260px;
+      height: 360px;
+      z-index: 100;
+    }
+
+    /* Hide non-matching cards when searching */
     .card.hidden {
       display: none;
     }
@@ -400,25 +432,32 @@
     }
 
     function render(items) {
-      grid.innerHTML = '';  // Clear the grid
-      let foundMatch = false;
+      grid.innerHTML = "";  // Clear the grid
+      const query = q.value.toLowerCase();
+
+      let firstMatch = null;
 
       items.forEach(item => {
         const card = createCard(item);
 
-        if (item.title.toLowerCase().includes(q.value.toLowerCase())) {
-          // This card matches the search
-          if (!foundMatch) {
-            card.classList.add('matching');
-            foundMatch = true; // Only one matching card can be centered
+        if (item.title.toLowerCase().includes(query)) {
+          if (!firstMatch) {
+            firstMatch = card;
+            card.classList.add("matching");
           }
-        } else {
-          // This card doesn't match, hide it
-          card.classList.add('hidden');
+        } else if (query.trim() !== "") {
+          card.classList.add("hidden");
         }
 
         grid.appendChild(card);
       });
+
+      // When searching, grid should not display layout gaps.
+      if (query.trim() !== "") {
+        grid.style.minHeight = "0px";
+      } else {
+        grid.style.minHeight = "500px";
+      }
     }
 
     function openItem(item) {
@@ -456,21 +495,19 @@
       }
     });
 
-    // Tab Switch Functionality
     gamesTab.addEventListener('click', () => {
       gamesTab.classList.add('active');
       appsTab.classList.remove('active');
-      loadGames();
+      render(GAMES);
     });
 
     appsTab.addEventListener('click', () => {
       appsTab.classList.add('active');
       gamesTab.classList.remove('active');
-      loadApps();
+      render(APPS);
     });
 
-    // Initialize with Games Tab Active
-    gamesTab.classList.add('active');
+    // Load default tab (Games)
     loadGames();
   </script>
 </body>
