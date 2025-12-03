@@ -148,17 +148,22 @@
     }
 
     .popular-games h3 {
-      font-size: 28px;
+      font-size: 24px; /* Reduced title size */
       color: #fff;
       margin-bottom: 16px;
     }
 
     .popular-games .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 22px;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Smaller grid items */
+      gap: 16px; /* Reduced gap */
       margin: 0 auto;
-      max-width: 1200px;
+      max-width: 1000px; /* Reduced width for a more compact layout */
+    }
+
+    .popular-games .card {
+      height: 250px; /* Reduced height */
+      padding: 8px; /* Reduced padding */
     }
   </style>
 </head>
@@ -229,7 +234,7 @@
     fetch('arcade_data.json')
       .then(r => r.json())
       .then(data => {
-        GAMES = data.games;
+        GAMES = data.games.sort((a, b) => a.title.localeCompare(b.title)); // Sort games alphabetically
         render(GAMES);
         updateCount(); // Update count for games
         loadFeaturedGames(); // Load popular games after games are loaded
