@@ -207,17 +207,17 @@
   const appsTab = document.getElementById('appsTab');
   const gamesCountElement = document.getElementById('gamesCount');
 
-  // Load Games data
-  function loadGames() {
-    fetch('arcade_data.json')
-      .then(r => r.json())
-      .then(data => {
-        GAMES = data.games;
-        render(GAMES);
-        updateCount(); // Update count for games
-      })
-      .catch(err => console.error('JSON load error', err));
-  }
+function loadApps() {
+  fetch('apps_data.json')
+    .then(r => r.json())
+    .then(data => {
+      APPS = data.apps;
+      render(APPS); // Render the apps
+      updateCount(); // Update count for apps
+    })
+    .catch(err => console.error('JSON load error', err));
+}
+
 
 function loadGames() {
   fetch('arcade_data.json')
@@ -226,11 +226,12 @@ function loadGames() {
       GAMES = data.games;
       // Sort games alphabetically by title
       GAMES.sort((a, b) => a.title.localeCompare(b.title));
-      render(GAMES);
+      render(GAMES); // Render the sorted games
       updateCount(); // Update count for games
     })
     .catch(err => console.error('JSON load error', err));
 }
+
 
 
   function createCard(item) {
@@ -296,12 +297,18 @@ function loadGames() {
     updateCount(); // Update count after filtering
   });
 
-  // Tab Switch Functionality
-  gamesTab.addEventListener('click', () => {
-    gamesTab.classList.add('active');
-    appsTab.classList.remove('active');
-    loadGames();
-  });
+gamesTab.addEventListener('click', () => {
+  gamesTab.classList.add('active');
+  appsTab.classList.remove('active');
+  loadGames(); // Ensure games load when the tab is clicked
+});
+
+appsTab.addEventListener('click', () => {
+  appsTab.classList.add('active');
+  gamesTab.classList.remove('active');
+  loadApps(); // Ensure apps load when the tab is clicked
+});
+
 
   appsTab.addEventListener('click', () => {
     appsTab.classList.add('active');
