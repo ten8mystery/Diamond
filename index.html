@@ -11,33 +11,50 @@
       --bg: #030308;
       --panel: rgba(255,255,255,0.03);
       --glass: rgba(255,255,255,0.04);
-      --accent1: 220 88% 60%; /* blue */
-      --accent2: 280 88% 60%; /* purple */
-      --accent3: 140 75% 50%; /* green */
-      --text-color: #e6eef8; /* default text color */
+      --accent1: 220 88% 60%; /* Blue */
+      --accent2: 280 88% 60%; /* Purple */
+      --accent3: 140 75% 50%; /* Green */
+      --text-color: #e6eef8; /* Default Text Color */
+      --button-text-color: #ffffff; /* Default Button Text Color */
     }
     *{box-sizing:border-box}
     html,body{height:100%;margin:0;background:var(--bg);color:var(--text-color);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial}
 
-    /* ---------- Animated background canvas (particles) ---------- */
-    canvas#particles{position:fixed;inset:0;z-index:-2;pointer-events:none;will-change:transform}
+    /* ---------- Modal and Theme Option Styles ---------- */
+    #settingsModal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      justify-content: center;
+      align-items: center;
+      background: rgba(2,6,23,0.8);
+      z-index: 60;
+    }
 
-    /* ---------- Moving orbs ---------- */
-    .orb{position:fixed;border-radius:50%;filter:blur(120px);opacity:0.95;mix-blend-mode:screen;z-index:-1;pointer-events:none}
-    .orb.orb--a{width:540px;height:540px;left:-8%;top:-6%;background:radial-gradient(circle at 30% 30%, hsla(var(--accent1),0.95) 0%, transparent 50%);animation:orbA 18s ease-in-out infinite}
-    .orb.orb--b{width:520px;height:520px;right:-6%;bottom:-8%;background:radial-gradient(circle at 70% 70%, hsla(var(--accent2),0.95) 0%, transparent 50%);animation:orbB 20s ease-in-out infinite}
-    .orb.orb--c{width:480px;height:480px;left:10%;bottom:-12%;background:radial-gradient(circle at 60% 40%, hsla(var(--accent3),0.9) 0%, transparent 50%);animation:orbC 24s ease-in-out infinite}
-    @keyframes orbA{0%{transform:translate(0,0)}50%{transform:translate(70px,-40px)}100%{transform:translate(0,0)}}
-    @keyframes orbB{0%{transform:translate(0,0)}50%{transform:translate(-60px,50px)}100%{transform:translate(0,0)}}
-    @keyframes orbC{0%{transform:translate(0,0)}50%{transform:translate(40px,60px)}100%{transform:translate(0,0)}}
+    #settingsModal > div {
+      width: 300px;
+      padding: 20px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.04);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+      background: #07070b;
+    }
 
-    /* ---------- HUD Navbar ---------- */
-    .hud{position:fixed;top:18px;left:50%;transform:translateX(-50%);z-index:30;display:flex;align-items:center;gap:14px;width:92%;max-width:1200px;padding:10px 16px;border-radius:14px;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.04);box-shadow:0 10px 40px rgba(0,0,0,0.6);backdrop-filter:blur(8px)}
-    .logo{display:flex;align-items:center;gap:12px}
-    .logo .mark{width:40px;height:40px;border-radius:9px;box-shadow:0 8px 30px rgba(145,90,255,0.18)}
-    .logo h1{font-size:18px;margin:0}
-    .hud .right{margin-left:auto;display:flex;gap:10px}
-    .pill{padding:8px 12px;border-radius:999px;background:var(--panel);border:1px solid rgba(255,255,255,0.03);font-size:13px;display:inline-flex;align-items:center;}
+    .theme-option {
+      padding: 10px;
+      margin: 5px;
+      background: var(--panel);
+      border-radius: 10px;
+      cursor: pointer;
+      text-align: center;
+      color: var(--text-color);
+      transition: background 200ms ease;
+    }
+
+    .theme-option:hover {
+      background: var(--accent1);
+    }
 
     /* ---------- Tab Button Styles ---------- */
     .hud .right button {
@@ -47,7 +64,7 @@
       border: none;
       border-radius: 10px;
       background: linear-gradient(145deg, var(--accent1), var(--accent2));
-      color: white;
+      color: var(--button-text-color); /* Use separate button text color */
       cursor: pointer;
       transition: transform 200ms ease, background 200ms ease, box-shadow 200ms ease;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
@@ -131,7 +148,7 @@
       padding: 10px 14px;
       border-radius: 10px;
       border: none;
-      color: white;
+      color: var(--button-text-color); /* Use separate button text color */
       background: linear-gradient(90deg, hsl(var(--accent1)), hsl(var(--accent2)));
       box-shadow: 0 10px 30px hsla(var(--accent1), 0.18);
       cursor: pointer;
@@ -252,16 +269,20 @@
     fetch('themes.json')
       .then(response => response.json())
       .then(data => {
-        console.log('Themes Loaded:', data);  // Add this line to log the themes data
-
-        // Create theme options
-        data.themes.forEach(theme => {
-          const themeOption = document.createElement('div');
-          themeOption.className = 'theme-option';
-          themeOption.textContent = theme.name;
-          themeOption.addEventListener('click', () => changeTheme(theme));
-          themeOptions.appendChild(themeOption);
-        });
+        console.log('Themes Loaded:', data);  // Debugging line to check if themes are loaded
+        
+        // Check if 'themes' array exists
+        if (data && data.themes) {
+          data.themes.forEach(theme => {
+            const themeOption = document.createElement('div');
+            themeOption.className = 'theme-option';
+            themeOption.textContent = theme.name;
+            themeOption.addEventListener('click', () => changeTheme(theme));
+            themeOptions.appendChild(themeOption);
+          });
+        } else {
+          console.error('Themes not found in the data');
+        }
       })
       .catch(error => {
         console.error('Error loading themes:', error);
