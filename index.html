@@ -212,6 +212,13 @@
     const appsTab = document.getElementById('appsTab');
     const gamesCountElement = document.getElementById('gamesCount');
 
+    // Reset iframe styles to ensure it fills the modal
+    function resetIframeStyles() {
+      gameFrame.style.position = '';  // Reset position style
+      gameFrame.style.width = '';  // Reset width
+      gameFrame.style.height = '';  // Reset height
+    }
+
     // Load Games data
     function loadGames() {
       fetch('arcade_data.json')
@@ -266,6 +273,7 @@
     }
 
     function openItem(item) {
+      resetIframeStyles();  // Reset iframe styles before opening a new game
       fetch(item.src)
         .then(response => response.text())
         .then(htmlContent => {
@@ -290,6 +298,8 @@
     closeModal.addEventListener('click', () => {
       modal.style.display = 'none';
       gameFrame.src = '';
+      document.exitFullscreen();  // Exit fullscreen if open
+      resetIframeStyles();  // Reset iframe styles when closing the modal
     });
 
     q.addEventListener('input', () => {
@@ -329,9 +339,7 @@
       if (isFullscreen) {
         // Exit fullscreen
         document.exitFullscreen();
-        gameFrame.style.position = '';  // Reset position style
-        gameFrame.style.width = '';  // Reset width
-        gameFrame.style.height = '';  // Reset height
+        resetIframeStyles();  // Reset iframe styles after exiting fullscreen
       } else {
         // Request fullscreen for modal and iframe
         modal.requestFullscreen();
@@ -349,6 +357,7 @@
       modal.style.display = 'none';
       gameFrame.src = '';  // Stop the game from running
       document.exitFullscreen();  // Exit fullscreen if open
+      resetIframeStyles();  // Reset iframe styles when closing the modal
       isFullscreen = false;
     });
 
@@ -356,12 +365,12 @@
     document.addEventListener('fullscreenchange', () => {
       if (!document.fullscreenElement) {
         // If fullscreen was exited manually (keyboard or other), reset the iframe
-        gameFrame.style.position = '';
-        gameFrame.style.width = '';
-        gameFrame.style.height = '';
-        isFullscreen = false;
-      }
-    });
-  </script>
-</body>
-</html>
+        reset
+    document.addEventListener('fullscreenchange', () => {
+  if (!document.fullscreenElement) {
+    // If fullscreen was exited manually (ESC, keyboard, browser UI)
+    resetIframeStyles();
+    isFullscreen = false;
+  }
+});
+
