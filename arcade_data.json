@@ -224,6 +224,31 @@
       "title": "OMORI",
       "src": "https://raw.githubusercontent.com/ten8mystery/Diamond-HTML-Files/refs/heads/main/omori.html",
       "thumb": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrBkjYiUsnnPAj9NaaceGGqtqwHNzQMZVwxQ&s"
+    },
+   {
+      "title": "Celeste",
+      "src": "https://raw.githubusercontent.com/ten8mystery/Diamond-HTML-Files/refs/heads/main/Celeste.html",
+      "thumb": "https://cdn.jsdelivr.net/gh/gn-math/covers@main/623.png"
+    },
+   {
+      "title": "Friday Night Funkin'",
+      "src": "https://raw.githubusercontent.com/ten8mystery/Diamond-HTML-Files/refs/heads/main/Friday%20Night%20Funkin.html",
+      "thumb": "https://img.itch.zone/aW1hZ2UvNzkyNzc4LzQ1MjMzNTkucG5n/original/OUw2Vg.png"
+    },
+   {
+      "title": "Vex 1",
+      "src": "https://cdn.jsdelivr.net/gh/gn-math/html@main/45.html",
+      "thumb": "https://cdn.jsdelivr.net/gh/gn-math/covers@main/45.png"
+    },
+   {
+      "title": "Vex 2",
+      "src": "https://cdn.jsdelivr.net/gh/gn-math/html@main/46.html",
+      "thumb": "https://cdn.jsdelivr.net/gh/gn-math/covers@main/46.png"
+    },
+   {
+      "title": "Vex 3",
+      "src": "https://cdn.jsdelivr.net/gh/gn-math/html@main/47.html",
+      "thumb": "https://cdn.jsdelivr.net/gh/gn-math/covers@main/47.png"
     }
   ]
 }
