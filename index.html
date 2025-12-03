@@ -15,8 +15,8 @@
       --accent2: 280 88% 60%; /* purple */
       --accent3: 140 75% 50%; /* green */
       --textColor: #ffffff; /* Always white text */
-      --bg-light: #add8e6; /* Default Light blue for background */
     }
+
     *{box-sizing:border-box}
     html,body{height:100%;margin:0;background:var(--bg);color:var(--textColor);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial}
 
@@ -179,8 +179,13 @@
       <button id="closeSettings" style="position:absolute;right:20px;top:16px;z-index:70;padding:8px 12px;border-radius:8px;background:rgba(255,255,255,0.06);border:none;color:#fff;cursor:pointer">Close</button>
       <div style="padding:20px;color:white;">
         <h3>Settings</h3>
-        <label for="volumeControl">Volume:</label>
-        <input id="volumeControl" type="range" min="0" max="100" value="50" style="width:100%">
+        <label for="colorScheme">Choose a color scheme:</label>
+        <select id="colorScheme" style="width:100%; padding:10px; background-color: #222; color: white;">
+          <option value="default">Default</option>
+          <option value="blood">Blood</option>
+          <option value="emerald">Emerald</option>
+          <option value="iron">Iron</option>
+        </select>
       </div>
     </div>
   </div>
@@ -222,9 +227,52 @@
     const settingsBtn = document.getElementById('settingsBtn');
     const settingsModal = document.getElementById('settingsModal');
     const closeSettings = document.getElementById('closeSettings');
-    const volumeControl = document.getElementById('volumeControl');
+    const colorSchemeSelector = document.getElementById('colorScheme');
+
+    // Color schemes
+    const schemes = {
+      default: {
+        bg: "#030308",
+        accent1: "220 88% 60%", // blue
+        accent2: "280 88% 60%", // purple
+        accent3: "140 75% 50%", // green
+      },
+      blood: {
+        bg: "#9b111e", // blood red
+        accent1: "0 80% 60%", // dark red
+        accent2: "350 80% 60%", // light red
+        accent3: "30 75% 50%", // dark orange
+      },
+      emerald: {
+        bg: "#2d6a4f", // emerald green
+        accent1: "140 88% 60%", // green
+        accent2: "120 80% 50%", // dark green
+        accent3: "160 75% 50%", // light green
+      },
+      iron: {
+        bg: "#4b4f54", // iron gray
+        accent1: "0 0% 50%", // gray
+        accent2: "60 0% 40%", // dark gray
+        accent3: "240 5% 30%", // dark blue-gray
+      }
+    };
+
+    // Function to apply color scheme
+    function applyColorScheme(scheme) {
+      document.documentElement.style.setProperty('--bg', scheme.bg);
+      document.documentElement.style.setProperty('--accent1', scheme.accent1);
+      document.documentElement.style.setProperty('--accent2', scheme.accent2);
+      document.documentElement.style.setProperty('--accent3', scheme.accent3);
+    }
+
+    // Handle color scheme change
+    colorSchemeSelector.addEventListener('change', (e) => {
+      const selectedScheme = schemes[e.target.value];
+      applyColorScheme(selectedScheme);
+    });
 
     // Volume Control
+    const volumeControl = document.getElementById('volumeControl');
     volumeControl.addEventListener('input', (e) => {
       const volume = e.target.value;
       // Adjust volume or implement audio control logic here (example: adjust sound in games)
