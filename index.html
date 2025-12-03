@@ -360,13 +360,66 @@ document.addEventListener('fullscreenchange', () => {
   }
 });
 
-// Function to reset iframe styles
+// Function to reset iframe styles and content
 function resetIframeStyles() {
-  gameFrame.style.position = '';  // Reset position
+  // Reset all styles affecting the iframe position and visibility
+  gameFrame.style.position = '';  // Reset position style
   gameFrame.style.top = '';  // Reset top
   gameFrame.style.left = '';  // Reset left
   gameFrame.style.width = '';  // Reset width
   gameFrame.style.height = '';  // Reset height
+  gameFrame.style.margin = '';  // Reset margin
+  gameFrame.style.padding = '';  // Reset padding
+  gameFrame.style.transform = '';  // Reset any transform applied
+  gameFrame.style.visibility = '';  // Ensure visibility is reset
+  gameFrame.style.opacity = '';  // Reset opacity if applied
+  gameFrame.style.display = 'none';  // Hide iframe temporarily until reset
+  gameFrame.src = '';  // Stop the current game or content
+  gameFrame.onload = null;  // Remove any load event listeners
+}
+
+// Close Button Logic (Closes the modal and resets iframe)
+closeModal.addEventListener('click', () => {
+  modal.style.display = 'none';
+  resetIframeStyles();  // Reset iframe styles when modal is closed
+  document.exitFullscreen();  // Exit fullscreen if open
+  isFullscreen = false;
+});
+
+// Listen for when the user exits fullscreen using keyboard or other means
+document.addEventListener('fullscreenchange', () => {
+  if (!document.fullscreenElement) {
+    // If fullscreen was exited manually (keyboard or other), reset the iframe styles
+    resetIframeStyles();
+    isFullscreen = false;
+  }
+});
+
+// Function to open content into iframe and reset it
+function openItem(item) {
+  // Ensure iframe is reset before loading new content
+  resetIframeStyles();
+  
+  fetch(item.src)
+    .then(response => response.text())
+    .then(htmlContent => {
+      gameFrame.contentDocument.open();
+      gameFrame.contentDocument.write(htmlContent);
+      gameFrame.contentDocument.close();
+      gameFrame.style.display = 'block';  // Make iframe visible when content is loaded
+      modal.style.display = 'flex';  // Show modal with the iframe
+    })
+    .catch(error => {
+      console.error('Error loading item content:', error);
+      gameFrame.contentDocument.open();
+      gameFrame.contentDocument.write(`
+        <div style="padding: 20px; color: white; background: #b91c1c; text-align: center; font-family: sans-serif; border-radius: 8px;">
+          <h2 style="margin-top: 0; color: white;">🛑 Error Loading Item 🛑</h2>
+          <p>Could not load content. This usually happens when the host server sends the wrong file type.</p>
+        </div>
+      `);
+      gameFrame.contentDocument.close();
+    });
 }
   </script>
 </body>
