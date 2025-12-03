@@ -8,13 +8,13 @@
   <style>
     /* ---------- Root & Reset ---------- */
     :root{
-      --bg:#030308;
+      --bg: #030308;
       --panel: rgba(255,255,255,0.03);
       --glass: rgba(255,255,255,0.04);
       --accent1: 220 88% 60%; /* blue */
       --accent2: 280 88% 60%; /* purple */
       --accent3: 140 75% 50%; /* green */
-      --bg-light: #add8e6; /* Light blue for background */
+      --bg-light: #add8e6; /* Default Light blue for background */
     }
     *{box-sizing:border-box}
     html,body{height:100%;margin:0;background:var(--bg);color:#e6eef8;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial}
@@ -227,6 +227,29 @@
     const volumeControl = document.getElementById('volumeControl');
     const bgColorPicker = document.getElementById('bgColor');
 
+    // Default color values
+    const defaultBgColor = '#add8e6'; // Default background color (light blue)
+    const defaultAccent1 = '220 88% 60%'; // Default accent color 1 (blue)
+    const defaultAccent2 = '280 88% 60%'; // Default accent color 2 (purple)
+    const defaultAccent3 = '140 75% 50%'; // Default accent color 3 (green)
+
+    // Update the background color and adjust the other colors dynamically
+    function updateColors(backgroundColor) {
+      document.documentElement.style.setProperty('--bg', backgroundColor);
+
+      // Calculate accent colors based on background color (or reset to defaults)
+      if (backgroundColor === defaultBgColor) {
+        document.documentElement.style.setProperty('--accent1', defaultAccent1);
+        document.documentElement.style.setProperty('--accent2', defaultAccent2);
+        document.documentElement.style.setProperty('--accent3', defaultAccent3);
+      } else {
+        // For example: adjust HSL values to keep the theme visually balanced
+        document.documentElement.style.setProperty('--accent1', '210 88% 65%'); // Lighter blue
+        document.documentElement.style.setProperty('--accent2', '260 88% 65%'); // Lighter purple
+        document.documentElement.style.setProperty('--accent3', '150 75% 55%'); // Lighter green
+      }
+    }
+
     // Volume Control
     volumeControl.addEventListener('input', (e) => {
       const volume = e.target.value;
@@ -236,7 +259,8 @@
 
     // Background Color Change
     bgColorPicker.addEventListener('input', (e) => {
-      document.documentElement.style.setProperty('--bg', e.target.value);
+      const bgColor = e.target.value;
+      updateColors(bgColor);
     });
 
     // Show Settings Modal
@@ -351,12 +375,6 @@
     // Initialize with Games Tab Active
     gamesTab.classList.add('active');
     loadGames();
-
-    // Function to update the count based on active tab
-    function updateCount() {
-      const itemCount = gamesTab.classList.contains('active') ? GAMES.length : APPS.length;
-      gamesCountElement.textContent = `Count: ${itemCount}`;
-    }
   </script>
 </body>
 </html>
