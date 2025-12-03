@@ -308,19 +308,17 @@
     </div>
   </div>
 
-  <!-- Settings Modal -->
-  <div id="settingsModal">
-    <div>
-      <button id="closeSettings" style="position:absolute;right:20px;top:16px;padding:8px 12px;border-radius:8px;background:rgba(255,255,255,0.06);border:none;color:#fff;cursor:pointer">Close</button>
-      <div style="padding:20px;color:white;">
-        <h3>Settings</h3>
-        <h4>Select Theme</h4>
-        <div id="themeOptions" style="display: flex; flex-direction: column;">
-          <!-- Theme options will be injected here by JavaScript -->
-        </div>
-      </div>
+<!-- Settings Modal -->
+<div id="settingsModal">
+  <div style="background: #111; padding: 30px; border-radius: 12px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6); max-width: 400px; width: 100%; text-align: center;">
+    <button id="closeSettings" style="position: absolute; right: 20px; top: 16px; padding: 10px 12px; border-radius: 8px; background: rgba(255, 255, 255, 0.1); border: none; color: #fff; cursor: pointer; font-size: 18px;">&times;</button>
+    <h3 style="font-size: 24px; color: #fff; margin-bottom: 20px;">Settings</h3>
+    <h4 style="font-size: 18px; color: #ccc;">Select Theme</h4>
+    <div id="themeOptions" style="display: flex; flex-direction: column; gap: 10px;">
+      <!-- Theme options will be injected here -->
     </div>
   </div>
+</div>
 
   <script>
     const settingsButton = document.getElementById('settingsButton');
