@@ -20,6 +20,16 @@
       "src": "https://raw.githubusercontent.com/Belcrafting/Hollow-Knight-HTML-port-/refs/heads/main/Hollow%20Knight.html",
       "thumb": "https://images.squarespace-cdn.com/content/v1/606d4deb4db8c15ea53b3624/1618824875786-3V9HT8BLB1L5PEEJC6ZQ/124.jpg"
     },
+   {
+      "title": "Deltarune",
+      "src": "https://raw.githubusercontent.com/jr41875-arch/Deltarune-Web-port/refs/heads/main/deltarune.html",
+      "thumb": "https://www.vice.com/wp-content/uploads/sites/2/2025/06/Deltarune-Featured-Image.jpg"
+    },
+   {
+      "title": "Undertale",
+      "src": "https://raw.githubusercontent.com/jimmyqrg/undertale/refs/heads/main/index.html",
+      "thumb": "https://media.gamestop.com/i/gamestop/10169207_SCR05/Undertale?w=1256&h=664&fmt=auto"
+    },
     {
       "title": "Geometry Dash Lite",
       "src": "https://cdn.jsdelivr.net/gh/gn-math/html@main/27.html",
@@ -249,6 +259,11 @@
       "title": "Vex 3",
       "src": "https://cdn.jsdelivr.net/gh/gn-math/html@main/47.html",
       "thumb": "https://cdn.jsdelivr.net/gh/gn-math/covers@main/47.png"
+    },
+   {
+      "title": "Doom",
+      "src": "https://cdn.jsdelivr.net/gh/gn-math/html@main/203.html",
+      "thumb": "https://cdn.jsdelivr.net/gh/gn-math/covers@main/203.png"
     }
   ]
 }
