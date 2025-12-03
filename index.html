@@ -135,7 +135,39 @@
       box-shadow: 0 10px 30px hsla(var(--accent1), 0.18);
       cursor: pointer;
       transition: transform 160ms;
-    }
+
+          /* Style for the Featured Games text */
+.featured-label {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.featured-label span {
+  font-size: 32px;
+  font-weight: bold;
+  color: #FFD700; /* Gold color */
+  text-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700, 0 0 30px #FFD700;
+  animation: glow 1.5s ease-in-out infinite alternate;
+}
+
+/* Glow animation for the gold text */
+@keyframes glow {
+  0% {
+    text-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700, 0 0 30px #FFD700;
+  }
+  100% {
+    text-shadow: 0 0 15px #FFAA00, 0 0 30px #FFAA00, 0 0 50px #FFAA00;
+  }
+}
+
+/* Separator line after the Featured Games section */
+.separator {
+  border: 0;
+  height: 1px;
+  background-color: #FFD700; /* Gold separator line */
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
 
     /* small screens */
     @media (max-width:640px){.hero h2{font-size:26px}.search{width:92%}}
@@ -160,19 +192,30 @@
     </div>
   </div>
 
-  <main>
-    <section class="hero">
-      <h2>Diamond — Upgraded Gaming</h2>
-      <p>Jump into any game, online, for free!</p>
-      <div class="search-wrap">
-        <div class="search"><input id="q" placeholder="Search..." /></div>
-      </div>
-    </section>
+<main>
+  <section class="hero">
+    <h2>Diamond — Upgraded Gaming</h2>
+    <p>Jump into any game, online, for free!</p>
+    <div class="search-wrap">
+      <div class="search"><input id="q" placeholder="Search..." /></div>
+    </div>
+  </section>
 
-    <section class="grid" id="grid">
-      <!-- cards injected by JS -->
-    </section>
-  </main>
+  <!-- Featured Games Section -->
+  <section class="featured-section">
+    <div class="featured-label">
+      <span>Featured Games</span>
+    </div>
+    <div class="grid-featured" id="featured-grid">
+      <!-- Featured games will be injected here -->
+    </div>
+    <hr class="separator">
+  </section>
+
+  <section class="grid" id="grid">
+    <!-- Regular games injected by JS -->
+  </section>
+</main>
 
 <!-- Modal -->
 <div id="modal" style="display:none;position:fixed;inset:0;justify-content:center;align-items:center;background:rgba(2,6,23,0.8);z-index:60">
