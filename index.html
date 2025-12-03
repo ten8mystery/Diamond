@@ -137,18 +137,29 @@
       transition: transform 160ms;
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); /* Change auto-fit to auto-fill */
-      gap: 22px;
-      max-width: 1200px;
-      margin: 36px auto;
-      padding: 0 18px;
-      z-index: 5;
-    }
-
     /* small screens */
     @media (max-width:640px){.hero h2{font-size:26px}.search{width:92%}}
+
+    /* ---------- Popular Games Section ---------- */
+    .popular-games {
+      padding: 20px 0;
+      background-color: #1b1b1d;
+      text-align: center;
+    }
+
+    .popular-games h3 {
+      font-size: 28px;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+
+    .popular-games .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 22px;
+      margin: 0 auto;
+      max-width: 1200px;
+    }
   </style>
 </head>
 <body>
@@ -179,6 +190,12 @@
       </div>
     </section>
 
+    <!-- Popular Games Section -->
+    <section class="popular-games">
+      <h3>Featured Games</h3>
+      <div class="grid" id="popularGamesGrid"></div>
+    </section>
+
     <section class="grid" id="grid">
       <!-- cards injected by JS -->
     </section>
@@ -191,7 +208,6 @@
     <iframe id="gameFrame" style="width:100%;height:100%;border:none" sandbox="allow-scripts allow-same-origin allow-pointer-lock"></iframe>
   </div>
 </div>
-
 
 <script>
   // ---------- Game and App lists (embeds) ----------
@@ -206,6 +222,7 @@
   const gamesTab = document.getElementById('gamesTab');
   const appsTab = document.getElementById('appsTab');
   const gamesCountElement = document.getElementById('gamesCount');
+  const popularGamesGrid = document.getElementById('popularGamesGrid'); // Grid for featured games
 
   // Load Games data
   function loadGames() {
@@ -215,6 +232,7 @@
         GAMES = data.games;
         render(GAMES);
         updateCount(); // Update count for games
+        loadFeaturedGames(); // Load popular games after games are loaded
       })
       .catch(err => console.error('JSON load error', err));
   }
@@ -258,6 +276,21 @@
   function render(items) {
     grid.innerHTML = '';
     items.filter(item => item.title.toLowerCase().includes(q.value.toLowerCase())).forEach(item => grid.appendChild(createCard(item)));
+  }
+
+  // Render the Popular Games
+  function renderPopularGames(items) {
+    popularGamesGrid.innerHTML = '';
+    items.forEach(item => {
+      const card = createCard(item);
+      popularGamesGrid.appendChild(card);
+    });
+  }
+
+  // Function to load featured games (top 5 or custom logic)
+  function loadFeaturedGames() {
+    const featuredGames = GAMES.slice(0, 5); // Customize this logic
+    renderPopularGames(featuredGames);
   }
 
   function openItem(item) {
