@@ -295,10 +295,20 @@
       "src": "https://cdn.jsdelivr.net/gh/gn-math/html@main/56.html",
       "thumb": "https://cdn.jsdelivr.net/gh/gn-math/covers@main/56.png"
     },
-       {
+   {
       "title": "Ages Of Conflict",
       "src": "https://cdn.jsdelivr.net/gh/gn-math/html@main/444.html",
       "thumb": "https://cdn.jsdelivr.net/gh/gn-math/covers@main/444.png"
+    },
+   {
+      "title": "Bad Monday Simulator",
+      "src": "https://cdn.jsdelivr.net/gh/gn-math/html@main/522.html",
+      "thumb": "https://cdn.jsdelivr.net/gh/gn-math/covers@main/522.png"
+    },
+       {
+      "title": "Bad Time Simulator",
+      "src": "https://cdn.jsdelivr.net/gh/gn-math/html@main/472.html",
+      "thumb": "https://cdn.jsdelivr.net/gh/gn-math/covers@main/472.png"
     },
    {
       "title": "Doom",
