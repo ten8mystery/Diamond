@@ -356,9 +356,11 @@ closeModal.addEventListener('click', () => {
 document.addEventListener('fullscreenchange', () => {
   if (!document.fullscreenElement) {
     // If fullscreen was exited manually (keyboard or other), reset the iframe
-    gameFrame.style.position = '';
-    gameFrame.style.width = '';
-    gameFrame.style.height = '';
+    gameFrame.style.position = '';  // Reset position
+    gameFrame.style.width = '';  // Reset width
+    gameFrame.style.height = '';  // Reset height
+    gameFrame.style.top = '';  // Ensure top is also reset
+    gameFrame.style.left = '';  // Ensure left is also reset
     isFullscreen = false;
   }
 });
