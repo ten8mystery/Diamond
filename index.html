@@ -198,35 +198,36 @@
       outline: none;
     }
 
-    /* ---------- Grid Layout ---------- */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 22px;
-      max-width: 1200px;
-      margin: 36px auto;
-      padding: 0 18px;
-      z-index: 5;
-    }
+/* ---------- Grid Layout ---------- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 22px;
+  max-width: 1200px;
+  margin: 36px auto;
+  padding: 0 18px;
+  z-index: 5;
+}
 
-    /* ---------- Card Styling ---------- */
-    .card {
-      position: relative;
-      overflow: hidden;
-      border-radius: 14px;
-      padding: 12px;
-      background: rgba(8,9,12,0.8);
-      border: 1px solid rgba(255,255,255,0.03);
-      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
-      transition: transform 260ms cubic-bezier(.2,.9,.2,1), box-shadow 260ms;
-      will-change: transform, box-shadow, opacity;
-      transform-style: preserve-3d;
-      backface-visibility: hidden;
-      height: 300px; /* Fixed height to prevent stretching */
-      display: block !important;
-      flex-direction: column;
-      justify-content: space-between;
-    }
+/* ---------- Card Styling ---------- */
+.card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+  padding: 12px;
+  background: rgba(8,9,12,0.8);
+  border: 1px solid rgba(255,255,255,0.03);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+  transition: transform 260ms cubic-bezier(.2,.9,.2,1), box-shadow 260ms;
+  will-change: transform, box-shadow, opacity;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  height: 300px; /* Fixed height to prevent stretching */
+  display: block !important; /* Force block display */
+  flex-direction: column;  /* This might be irrelevant since we are using grid */
+  justify-content: space-between;
+  width: 100%; /* Ensure it takes full width of its container */
+}
 
     /* Add hover effect to cards */
     .card:hover {
