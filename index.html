@@ -247,5 +247,129 @@
     }
   </script>
 
+  <script>
+    // ---------- Game and App lists (embeds) ----------
+    let GAMES = [];
+    let APPS = [];
+
+    const grid = document.getElementById('grid');
+    const q = document.getElementById('q');
+    const modal = document.getElementById('modal');
+    const gameFrame = document.getElementById('gameFrame');
+    const closeModal = document.getElementById('closeModal');
+    const gamesTab = document.getElementById('gamesTab');
+    const appsTab = document.getElementById('appsTab');
+    const gamesCountElement = document.getElementById('gamesCount');
+
+    // Load Games data
+    function loadGames() {
+      fetch('arcade_data.json')
+        .then(r => r.json())
+        .then(data => {
+          GAMES = data.games;
+          render(GAMES);
+          updateCount(); // Update count for games
+        })
+        .catch(err => console.error('JSON load error', err));
+    }
+
+    // Load Apps data
+    function loadApps() {
+      fetch('apps_data.json')
+        .then(r => r.json())
+        .then(data => {
+          APPS = data.apps;
+          render(APPS);
+          updateCount(); // Update count for apps
+        })
+        .catch(err => console.error('JSON load error', err));
+    }
+
+    function createCard(item) {
+      const el = document.createElement('article');
+      el.className = 'card';
+
+      const img = document.createElement('img');
+      img.className = 'thumb';
+      img.src = item.thumb;
+      img.alt = item.title;
+
+      const meta = document.createElement('div'); meta.className = 'meta';
+      const h3 = document.createElement('h3'); h3.textContent = item.title;
+      const btn = document.createElement('button'); btn.className = 'play'; btn.textContent = 'Play';
+
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openItem(item);
+      });
+
+      meta.appendChild(h3); meta.appendChild(btn);
+      el.appendChild(img); el.appendChild(meta);
+
+      return el;
+    }
+
+    function render(items) {
+      grid.innerHTML = '';
+      items.filter(item => item.title.toLowerCase().includes(q.value.toLowerCase())).forEach(item => grid.appendChild(createCard(item)));
+    }
+
+    function openItem(item) {
+      fetch(item.src)
+        .then(response => response.text())
+        .then(htmlContent => {
+          gameFrame.contentDocument.open();
+          gameFrame.contentDocument.write(htmlContent);
+          gameFrame.contentDocument.close();
+          modal.style.display = 'flex';
+        })
+        .catch(error => {
+          console.error('Error loading item content:', error);
+          gameFrame.contentDocument.open();
+          gameFrame.contentDocument.write(`
+            <div style="padding: 20px; color: white; background: #b91c1c; text-align: center; font-family: sans-serif; border-radius: 8px;">
+              <h2 style="margin-top: 0; color: white;">🛑 Error Loading Item 🛑</h2>
+              <p>Could not load content. This usually happens when the host server sends the wrong file type.</p>
+            </div>
+          `);
+          gameFrame.contentDocument.close();
+        });
+    }
+
+    closeModal.addEventListener('click', () => {
+      modal.style.display = 'none';
+      gameFrame.src = '';
+    });
+
+    q.addEventListener('input', () => {
+      let filteredItems = gamesTab.classList.contains('active') ? GAMES : APPS;
+      filteredItems = filteredItems.filter(item => item.title.toLowerCase().includes(q.value.toLowerCase()));
+      render(filteredItems);
+      updateCount(); // Update count after filtering
+    });
+
+    // Tab Switch Functionality
+    gamesTab.addEventListener('click', () => {
+      gamesTab.classList.add('active');
+      appsTab.classList.remove('active');
+      loadGames();
+    });
+
+    appsTab.addEventListener('click', () => {
+      appsTab.classList.add('active');
+      gamesTab.classList.remove('active');
+      loadApps();
+    });
+
+    // Initialize with Games Tab Active
+    gamesTab.classList.add('active');
+    loadGames();
+
+    // Function to update the count based on active tab
+    function updateCount() {
+      const itemCount = gamesTab.classList.contains('active') ? GAMES.length : APPS.length;
+      gamesCountElement.textContent = `Count: ${itemCount}`;
+    }
+  </script>
 </body>
 </html>
