@@ -25,6 +25,6 @@
 ## :handshake: Contact
 
 #### TEN8mystery - fortniteballs9.11@outlook.com
-#### Huntermayyhunt - Hell nah 💀 We gatekeeping him fr
+#### Huntermayyhunt - clashofroyale234@outlook.com
 
 Project Link: [https://github.com/ten8mystery/Diamond-Games/](https://github.com/ten8mystery/Diamond-Games/)
