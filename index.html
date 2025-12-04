@@ -336,6 +336,7 @@ h4 {
 <div class="right">
   <button id="gamesTab" class="active">Games</button>
   <button id="appsTab">Apps</button>
+  <button id="unlockerTab">Unlocker</button> <!-- New Tab -->
   <span id="gamesCount" class="pill"></span>
   <button id="settingsButton">Settings</button>
 </div>
@@ -526,7 +527,7 @@ unlockerTab.addEventListener('click', () => {
   appsTab.classList.remove('active');
   
   // Load Unlocker iframe
-  gameFrame.src = 'https://bb6826b4.idjgvioevo90vuv.pages.dev/'; // Set iframe source
+  gameFrame.src = '/pages/unlocker/'; // Set iframe source
   modal.style.display = 'flex'; // Open modal with iframe content
 });
 
