@@ -166,6 +166,16 @@
       "thumb": "https://cdn.jsdelivr.net/gh/gn-math/covers@main/34.png"
     },
    {
+      "title": "Run 1",
+      "src": "https://cdn.jsdelivr.net/gh/gn-math/html@main/175.html",
+      "thumb": "https://cdn.jsdelivr.net/gh/gn-math/covers@main/175.png"
+    },
+   {
+      "title": "Run 2",
+      "src": "https://cdn.jsdelivr.net/gh/gn-math/html@main/176.html",
+      "thumb": "https://cdn.jsdelivr.net/gh/gn-math/covers@main/176.png"
+    },
+   {
       "title": "Run 3",
       "src": "https://cdn.jsdelivr.net/gh/gn-math/html@main/177.html",
       "thumb": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlEIB4BKRwQhBZENGwoA4lZtd4IoatQ7WvMQ&s"
@@ -554,6 +564,26 @@
       "title": "Ragdoll Hit",
       "src": "https://cdn.jsdelivr.net/gh/gn-math/html@main/44.html",
       "thumb": "https://cdn.jsdelivr.net/gh/gn-math/covers@main/44.png"
+    },
+     {
+      "title": "Raft Wars",
+      "src": "https://cdn.jsdelivr.net/gh/gn-math/html@main/344.html",
+      "thumb": "https://cdn.jsdelivr.net/gh/gn-math/covers@main/344.png"
+    },
+     {
+      "title": "Raft Wars 2",
+      "src": "https://cdn.jsdelivr.net/gh/gn-math/html@main/345.html",
+      "thumb": "https://cdn.jsdelivr.net/gh/gn-math/covers@main/345.png"
+    },
+     {
+      "title": "Slice It All!",
+      "src": "https://cdn.jsdelivr.net/gh/gn-math/html@main/128.html",
+      "thumb": "https://cdn.jsdelivr.net/gh/gn-math/covers@main/128.png"
+    },
+     {
+      "title": "Smash Karts",
+      "src": "https://cdn.jsdelivr.net/gh/gn-math/html@main/370.html",
+      "thumb": "https://cdn.jsdelivr.net/gh/gn-math/covers@main/370.png"
     },
    {
       "title": "Doom",
