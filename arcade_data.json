@@ -696,9 +696,34 @@
       "thumb": "https://cdn.jsdelivr.net/gh/gn-math/covers@main/57.png"
     },
    {
-      "title": "DOOM Classic",
+      "title": "DOOM",
       "src": "https://raw.githubusercontent.com/ten8mystery/Diamond-Backend/refs/heads/main/DOOM.html",
       "thumb": "https://cdn.jsdelivr.net/gh/gn-math/covers@main/203.png"
+    },
+   {
+      "title": "DOOM 2",
+      "src": "https://raw.githubusercontent.com/ten8mystery/Diamond-Backend/refs/heads/main/Doom%202.html",
+      "thumb": "https://cdn.jsdelivr.net/gh/gn-math/covers@main/602.png"
+    },
+   {
+      "title": "Crazy Cattle 3D",
+      "src": "https://cdn.jsdelivr.net/gh/gn-math/html@main/164.html",
+      "thumb": "https://cdn.jsdelivr.net/gh/gn-math/covers@main/164.png"
+    },
+   {
+      "title": "Crazy Chicken 3D",
+      "src": "https://cdn.jsdelivr.net/gh/gn-math/html@main/255.html",
+      "thumb": "https://cdn.jsdelivr.net/gh/gn-math/covers@main/255.png"
+    },
+   {
+      "title": "Crazy Chicken 3D",
+      "src": "https://cdn.jsdelivr.net/gh/gn-math/html@main/256.html",
+      "thumb": "https://cdn.jsdelivr.net/gh/gn-math/covers@main/256.png"
+    },
+   {
+      "title": "Death Run 3D",
+      "src": "https://cdn.jsdelivr.net/gh/gn-math/html@main/211.html",
+      "thumb": "https://cdn.jsdelivr.net/gh/gn-math/covers@main/211.png"
     }
   ]
 }
