@@ -616,6 +616,27 @@ loadGames();
     render(APPS);
   }
 });
+    // Cloak Button Logic
+document.getElementById("cloakButton").addEventListener("click", () => {
+  const win = window.open("about:blank", "_blank");
+
+  if (!win) {
+    alert("Your browser blocked the pop-up. Enable pop-ups to use Cloak.");
+    return;
+  }
+
+  const html = `
+    <title>My Drive</title>
+    <style>
+      body { margin:0; }
+      iframe { width:100vw; height:100vh; border:none; }
+    </style>
+    <iframe src="${location.href}"></iframe>
+  `;
+
+  win.document.write(html);
+  win.document.close();
+});
   </script>
 </body>
 </html>
