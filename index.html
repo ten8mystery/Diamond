@@ -90,7 +90,6 @@
       border-radius:999px;
       font-size:13px;
     }
-
     /* SEARCH */
     #searchContainer {
       margin-top:20px;
@@ -171,7 +170,6 @@
     }
 
     .play:hover { transform:translateY(-2px); }
-
     /* SETTINGS BUTTONS */
     .theme-option {
       padding: 12px 16px;
@@ -195,17 +193,16 @@
     }
 
     #settingsModal.show {
-  opacity: 1;
-}
+      opacity: 1;
+    }
 
-#settingsModal.show > div {
-  transform: scale(1);
-}
+    #settingsModal.show > div {
+      transform: scale(1);
+    }
 
-#settingsModal > div {
-  transform: scale(0.95);
-}
-
+    #settingsModal > div {
+      transform: scale(0.95);
+    }
   </style>
 </head>
 
@@ -230,7 +227,7 @@
     </div>
   </div>
 
-  <!-- HERO (for Games + Apps) -->
+  <!-- HERO -->
   <div id="mainHero" style="
     width:100%;
     text-align:center;
@@ -259,14 +256,12 @@
       <input id="q" placeholder="Search...">
     </div>
   </div>
+
   <main>
-
-    <!-- GRID FOR GAMES/APPS -->
+    <!-- GRID -->
     <section class="grid" id="grid" style="display:none;"></section>
-
   </main>
-
-  <!-- MODAL -->
+  <!-- GAME MODAL -->
   <div id="modal" style="
     display:none;
     position:fixed;
@@ -357,217 +352,235 @@
       </button>
     </div>
   </div>
-<script>
-/* =====================
-   ELEMENTS
-===================== */
-const gamesTab = document.getElementById('gamesTab');
-const appsTab = document.getElementById('appsTab');
-const unlockerTab = document.getElementById('unlockerTab');
+  <script>
+    /* ELEMENTS */
+    const gamesTab = document.getElementById('gamesTab');
+    const appsTab = document.getElementById('appsTab');
+    const unlockerTab = document.getElementById('unlockerTab');
 
-const grid = document.getElementById('grid');
-const searchContainer = document.getElementById('searchContainer');
-const searchInput = document.getElementById('q');
+    const grid = document.getElementById('grid');
+    const searchContainer = document.getElementById('searchContainer');
+    const searchInput = document.getElementById('q');
 
-const modal = document.getElementById('modal');
-const gameFrame = document.getElementById('gameFrame');
-const closeModal = document.getElementById('closeModal');
-const fullscreenBtn = document.getElementById('fullscreenBtn');
+    const modal = document.getElementById('modal');
+    const gameFrame = document.getElementById('gameFrame');
+    const closeModal = document.getElementById('closeModal');
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
 
-const settingsModal = document.getElementById('settingsModal');
-const closeSettings = document.getElementById('closeSettings');
-const settingsButton = document.getElementById('settingsButton');
+    const settingsModal = document.getElementById('settingsModal');
+    const closeSettings = document.getElementById('closeSettings');
+    const settingsButton = document.getElementById('settingsButton');
 
-const gamesCountElement = document.getElementById('gamesCount');
-const mainHero = document.getElementById('mainHero');
+    const gamesCountElement = document.getElementById('gamesCount');
+    const mainHero = document.getElementById('mainHero');
 
-let lastActiveTab = "games";
-let GAMES = [];
-let APPS = [];
+    let lastActiveTab = "games";
+    let GAMES = [];
+    let APPS = [];
 
-/* =====================
-   LOADERS
-===================== */
-function loadGames() {
-  fetch('arcade_data.json')
-    .then(r => r.json())
-    .then(data => {
-      GAMES = data.games || [];
-      render(GAMES);
-      updateCount();
-    });
-}
+    /* LOAD GAMES */
+    function loadGames() {
+      fetch('arcade_data.json')
+        .then(r => r.json())
+        .then(data => {
+          GAMES = data.games || [];
+          render(GAMES);
+          updateCount();
+        });
+    }
 
-function loadApps() {
-  fetch('apps_data.json')
-    .then(r => r.json())
-    .then(data => {
-      APPS = data.apps || [];
-      render(APPS);
-      updateCount();
-    });
-}
+    /* LOAD APPS */
+    function loadApps() {
+      fetch('apps_data.json')
+        .then(r => r.json())
+        .then(data => {
+          APPS = data.apps || [];
+          render(APPS);
+          updateCount();
+        });
+    }
 
-/* =====================
-   RENDERING
-===================== */
-function render(items) {
-  const q = searchInput.value.toLowerCase();
-  grid.innerHTML = "";
+    /* RENDER GRID */
+    function render(items) {
+      const q = searchInput.value.toLowerCase();
+      grid.innerHTML = "";
 
-  items
-    .filter(i => i.title.toLowerCase().includes(q))
-    .forEach(i => grid.appendChild(createCard(i)));
-}
+      items
+        .filter(item => item.title.toLowerCase().includes(q))
+        .forEach(item => grid.appendChild(createCard(item)));
+    }
 
-function createCard(item) {
-  const el = document.createElement('article');
-  el.className = 'card';
+    /* CREATE CARD */
+    function createCard(item) {
+      const el = document.createElement('article');
+      el.className = 'card';
 
-  el.innerHTML = `
-    <img class="thumb" src="${item.thumb}" loading="lazy">
-    <div class="meta">
-      <h3>${item.title}</h3>
-      <button class="play">Play</button>
-    </div>
-  `;
+      const img = document.createElement('img');
+      img.className = 'thumb';
+      img.src = item.thumb;
+      img.loading = "lazy";
 
-  el.querySelector('.play').onclick = () => openItem(item);
-  return el;
-}
+      const meta = document.createElement('div');
+      meta.className = 'meta';
 
-/* =====================
-   MODAL
-===================== */
-function openItem(item) {
-  modal.style.display = 'flex';
+      const h3 = document.createElement('h3');
+      h3.textContent = item.title;
 
-  fetch(item.src)
-    .then(r => r.text())
-    .then(html => {
+      const btn = document.createElement('button');
+      btn.className = 'play';
+      btn.textContent = 'Play';
+      btn.onclick = () => openItem(item);
+
+      meta.appendChild(h3);
+      meta.appendChild(btn);
+      el.appendChild(img);
+      el.appendChild(meta);
+
+      return el;
+    }
+
+    /* OPEN GAME */
+    function openItem(item) {
+      modal.style.display = 'flex';
+
+      fetch(item.src)
+        .then(r => r.text())
+        .then(html => {
+          gameFrame.contentDocument.open();
+          gameFrame.contentDocument.write(html);
+          gameFrame.contentDocument.close();
+        })
+        .catch(() => {
+          gameFrame.contentDocument.open();
+          gameFrame.contentDocument.write(`<h2 style="color:white;padding:20px;">Failed to load game</h2>`);
+          gameFrame.contentDocument.close();
+        });
+    }
+
+    /* CLOSE MODAL */
+    closeModal.onclick = () => {
+      modal.style.display = 'none';
       gameFrame.contentDocument.open();
-      gameFrame.contentDocument.write(html);
+      gameFrame.contentDocument.write('');
       gameFrame.contentDocument.close();
-    })
-    .catch(() => {
-      gameFrame.src = item.src;
+    };
+
+    /* FULLSCREEN */
+    fullscreenBtn.onclick = () => {
+      if (gameFrame.requestFullscreen) gameFrame.requestFullscreen();
+    };
+
+    document.addEventListener('fullscreenchange', () => {
+      if (!document.fullscreenElement) modal.style.padding = "";
     });
-}
 
-closeModal.onclick = () => {
-  modal.style.display = 'none';
-  gameFrame.src = '';
-};
+    /* ============================
+       TAB SWITCHING
+       ============================ */
 
-fullscreenBtn.onclick = () => {
-  gameFrame.requestFullscreen?.();
-};
+    /* GAMES TAB */
+    gamesTab.onclick = () => {
+      lastActiveTab = "games";
 
-/* =====================
-   TABS
-===================== */
-function activateTab(tab) {
-  [gamesTab, appsTab, unlockerTab].forEach(b => b.classList.remove('active'));
-  tab.classList.add('active');
-}
+      gamesTab.classList.add('active');
+      appsTab.classList.remove('active');
+      unlockerTab.classList.remove('active');
 
-gamesTab.onclick = () => {
-  lastActiveTab = "games";
-  activateTab(gamesTab);
+      mainHero.style.display = "block";
+      searchContainer.style.display = "flex";
+      grid.style.display = "grid";
+      gamesCountElement.style.display = "inline-block";
 
-  mainHero.style.display = "block";
-  searchContainer.style.display = "flex";
-  grid.style.display = "grid";
-  gamesCountElement.style.display = "inline-block";
+      loadGames();
+    };
 
-  loadGames();
-};
+    /* APPS TAB */
+    appsTab.onclick = () => {
+      lastActiveTab = "apps";
 
-appsTab.onclick = () => {
-  lastActiveTab = "apps";
-  activateTab(appsTab);
+      appsTab.classList.add('active');
+      gamesTab.classList.remove('active');
+      unlockerTab.classList.remove('active');
 
-  mainHero.style.display = "block";
-  searchContainer.style.display = "flex";
-  grid.style.display = "grid";
-  gamesCountElement.style.display = "inline-block";
+      mainHero.style.display = "block";
+      searchContainer.style.display = "flex";
+      grid.style.display = "grid";
+      gamesCountElement.style.display = "inline-block";
 
-  loadApps();
-};
+      loadApps();
+    };
 
-unlockerTab.onclick = () => {
-  activateTab(unlockerTab);
+    /* UNLOCKER TAB */
+    unlockerTab.onclick = () => {
+      unlockerTab.classList.add('active');
+      gamesTab.classList.remove('active');
+      appsTab.classList.remove('active');
 
-  mainHero.style.display = "none";
-  searchContainer.style.display = "none";
-  grid.style.display = "none";
-  gamesCountElement.style.display = "none";
+      mainHero.style.display = "none";
+      searchContainer.style.display = "none";
+      grid.style.display = "none";
 
-  modal.style.display = "flex";
-  gameFrame.src = "https://ihce0h92o3nndk0.pages.dev/";
-};
+      modal.style.display = 'flex';
+      gameFrame.src = "https://ihce0h92o3nndk0.pages.dev/";
+    };
 
-/* =====================
-   SEARCH
-===================== */
-searchInput.addEventListener('input', () => {
-  if (lastActiveTab === "games") render(GAMES);
-  if (lastActiveTab === "apps") render(APPS);
-});
-
-/* =====================
-   COUNT
-===================== */
-function updateCount() {
-  gamesCountElement.textContent =
-    "Count: " + (lastActiveTab === "games" ? GAMES.length : APPS.length);
-}
-
-/* =====================
-   SETTINGS
-===================== */
-settingsButton.onclick = () => {
-  settingsModal.style.display = 'flex';
-  requestAnimationFrame(() => settingsModal.classList.add('show'));
-};
-
-closeSettings.onclick = () => {
-  settingsModal.classList.remove('show');
-  setTimeout(() => settingsModal.style.display = 'none', 250);
-};
-
-/* =====================
-   THEMES
-===================== */
-fetch('themes.json')
-  .then(r => r.json())
-  .then(data => {
-    const options = document.getElementById('themeOptions');
-    data.themes.forEach(theme => {
-      const div = document.createElement('div');
-      div.className = 'theme-option';
-      div.textContent = theme.name;
-
-      div.onclick = () => {
-        for (const key in theme) {
-          document.documentElement.style.setProperty(key, theme[key]);
-        }
-        document
-          .querySelectorAll('.theme-option')
-          .forEach(o => o.classList.remove('active'));
-        div.classList.add('active');
-      };
-      options.appendChild(div);
+    /* SEARCH */
+    searchInput?.addEventListener('input', () => {
+      if (lastActiveTab === "games") render(GAMES);
+      if (lastActiveTab === "apps") render(APPS);
     });
-  });
 
-/* =====================
-   INITIAL
-===================== */
-mainHero.style.display = "block";
-searchContainer.style.display = "flex";
-grid.style.display = "grid";
-loadGames();
-</script>
+    /* COUNT */
+    function updateCount() {
+      gamesCountElement.textContent =
+        "Count: " + (lastActiveTab === "games" ? GAMES.length : APPS.length);
+    }
+
+    /* SETTINGS MODAL */
+    settingsButton.onclick = () => {
+      settingsModal.style.display = 'flex';
+      requestAnimationFrame(() => {
+        settingsModal.classList.add('show');
+      });
+    };
+
+    closeSettings.onclick = () => {
+      settingsModal.classList.remove('show');
+      setTimeout(() => {
+        settingsModal.style.display = 'none';
+      }, 250);
+    };
+
+    /* THEMES */
+    fetch('themes.json')
+      .then(r => r.json())
+      .then(data => {
+        const options = document.getElementById('themeOptions');
+        data.themes.forEach(theme => {
+          const div = document.createElement('div');
+          div.className = 'theme-option';
+          div.textContent = theme.name;
+
+          div.onclick = () => {
+            for (const key in theme) {
+              if (key === "name") continue; // skip name
+              document.documentElement.style.setProperty(key, theme[key]);
+            }
+            document.querySelectorAll('.theme-option')
+              .forEach(o => o.classList.remove('active'));
+            div.classList.add('active');
+          };
+
+          options.appendChild(div);
+        });
+      });
+
+    /* INITIAL LOAD */
+    mainHero.style.display = "block";
+    searchContainer.style.display = "flex";
+    grid.style.display = "grid";
+    loadGames();
+    updateCount();
+  </script>
 </body>
-<html>
+</html>
