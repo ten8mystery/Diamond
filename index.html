@@ -91,26 +91,12 @@
       font-size:13px;
     }
 
-    .hero {
-      padding-top:130px;
-      text-align:center;
+    /* SEARCH (now global, not part of hero) */
+    #searchContainer {
+      margin-top:150px;
+      display:none;
+      justify-content:center;
     }
-
-    .hero h2 {
-      font-size:42px;
-      font-weight:800;
-      background:linear-gradient(90deg, hsl(var(--accent1)), hsl(var(--accent2)));
-      -webkit-background-clip:text;
-      -webkit-text-fill-color:transparent;
-      margin-bottom:6px;
-    }
-
-    .hero p {
-      font-size:16px;
-      color:var(--text-soft);
-    }
-
-    .search-wrap { margin-top:22px; display:flex; justify-content:center; }
 
     .search {
       width:680px;
@@ -138,6 +124,7 @@
       color:var(--text);
     }
 
+    /* GRID */
     .grid {
       display:grid;
       grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));
@@ -185,85 +172,9 @@
 
     .play:hover { transform:translateY(-2px); }
 
-    #modal {
-      display:none;
-      position:fixed;
-      inset:0;
-      background:rgba(0,0,0,0.75);
-      z-index:50;
-      justify-content:center;
-      align-items:center;
-    }
-
-    #modal > div {
-      width:95%;
-      max-width:1500px;
-      height:90vh;
-      background:#0b0b11;
-      border-radius:var(--radius);
-      border:1px solid rgba(255,255,255,0.05);
-      overflow:hidden;
-      box-shadow:0 10px 30px rgba(0,0,0,0.45);
-      position:relative;
-    }
-
-    #closeModal, #fullscreenBtn {
-      position:absolute;
-      top:16px;
-      padding:8px 12px;
-      background:rgba(255,255,255,0.12);
-      border:none;
-      border-radius:8px;
-      color:white;
-      cursor:pointer;
-      z-index:100;
-    }
-
-    #closeModal { right:20px; }
-    #fullscreenBtn { right:90px; }
-
-    #settingsModal {
-      display:none;
-      position:fixed;
-      inset:0;
-      background:rgba(0,0,0,0.55);
-      z-index:60;
-      justify-content:center;
-      align-items:center;
-      transition:250ms;
-      opacity:0;
-    }
-
-    #settingsModal.show { opacity:1; }
-
-    #settingsModal > div {
-      background:#111;
-      padding:30px;
-      border-radius:12px;
-      width:92%;
-      max-width:420px;
-      border:1px solid rgba(255,255,255,0.08);
-      text-align:center;
-      transition:300ms;
-    }
-
-    .theme-option {
-      padding:12px;
-      background:rgba(255,255,255,0.04);
-      border-radius:10px;
-      margin-bottom:8px;
-      cursor:pointer;
-      transition:150ms;
-    }
-
-    .theme-option:hover { background:rgba(255,255,255,0.12); }
-
-    .theme-option.active {
-      background:linear-gradient(135deg, hsl(var(--accent2)), hsl(var(--accent1)));
-      color:white;
-    }
   </style>
 </head>
+
 <body>
 
   <!-- TOP BAR -->
@@ -286,8 +197,14 @@
     </div>
   </div>
 
-  <main>
+  <!-- SEARCH BAR NOW GLOBAL -->
+  <div id="searchContainer">
+    <div class="search">
+      <input id="q" placeholder="Search...">
+    </div>
+  </div>
 
+  <main>
     <!-- HOME SECTION -->
     <section id="homeSection" style="padding-top:130px; text-align:center;">
       <h2 style="
@@ -311,27 +228,59 @@
       </div>
     </section>
 
-    <!-- ORIGINAL HERO (HIDDEN UNTIL GAMES/APPS TAB) -->
-    <section class="hero" id="gameHero" style="display:none;">
-      <h2>Diamond — Upgraded Gaming</h2>
-      <p>Jump into any game, instantly.</p>
+    <!-- HERO REMOVED COMPLETELY -->
 
-      <div class="search-wrap">
-        <div class="search">
-          <input id="q" placeholder="Search..." />
-        </div>
-      </div>
-    </section>
-
-    <!-- ORIGINAL GRID -->
+    <!-- GRID FOR GAMES/APPS -->
     <section class="grid" id="grid" style="display:none;"></section>
 
   </main>
+
   <!-- MODAL -->
-  <div id="modal">
-    <div>
-      <button id="closeModal">Close</button>
-      <button id="fullscreenBtn">Fullscreen</button>
+  <div id="modal" style="
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.75);
+    z-index:50;
+    justify-content:center;
+    align-items:center;
+  ">
+    <div style="
+      width:95%;
+      max-width:1500px;
+      height:90vh;
+      background:#0b0b11;
+      border-radius:var(--radius);
+      border:1px solid rgba(255,255,255,0.05);
+      overflow:hidden;
+      box-shadow:0 10px 30px rgba(0,0,0,0.45);
+      position:relative;
+    ">
+      <button id="closeModal" style="
+        position:absolute;
+        top:16px;
+        right:20px;
+        padding:8px 12px;
+        background:rgba(255,255,255,0.12);
+        border:none;
+        border-radius:8px;
+        color:white;
+        cursor:pointer;
+        z-index:100;
+      ">Close</button>
+
+      <button id="fullscreenBtn" style="
+        position:absolute;
+        top:16px;
+        right:90px;
+        padding:8px 12px;
+        background:rgba(255,255,255,0.12);
+        border:none;
+        border-radius:8px;
+        color:white;
+        cursor:pointer;
+        z-index:100;
+      ">Fullscreen</button>
 
       <iframe id="gameFrame"
         style="width:100%;height:100%;border:none"
@@ -340,26 +289,43 @@
   </div>
 
   <!-- SETTINGS MODAL -->
-  <div id="settingsModal">
-    <div>
+  <div id="settingsModal" style="
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.55);
+    z-index:60;
+    justify-content:center;
+    align-items:center;
+    transition:250ms;
+    opacity:0;
+  ">
+    <div style="
+      background:#111;
+      padding:30px;
+      border-radius:12px;
+      width:92%;
+      max-width:420px;
+      border:1px solid rgba(255,255,255,0.08);
+      text-align:center;
+      transition:300ms;
+    ">
       <h2 style="margin-bottom:10px;">Settings</h2>
       <div id="themeOptions"></div>
 
-      <button id="closeSettings"
-        style="
-          margin-top:20px;
-          padding:10px 16px;
-          border:none;
-          border-radius:10px;
-          background:rgba(255,255,255,0.08);
-          color:white;
-          cursor:pointer;
-        ">
+      <button id="closeSettings" style="
+        margin-top:20px;
+        padding:10px 16px;
+        border:none;
+        border-radius:10px;
+        background:rgba(255,255,255,0.08);
+        color:white;
+        cursor:pointer;
+      ">
         Close
       </button>
     </div>
   </div>
-
   <script>
     /* ELEMENTS */
     const homeTab = document.getElementById('homeTab');
@@ -368,16 +334,16 @@
     const unlockerTab = document.getElementById('unlockerTab');
 
     const homeSection = document.getElementById('homeSection');
-    const gameHero = document.getElementById('gameHero');
     const grid = document.getElementById('grid');
     const featuredGrid = document.getElementById('featuredGrid');
+
+    const searchContainer = document.getElementById('searchContainer');
+    const searchInput = document.getElementById('q');
 
     const modal = document.getElementById('modal');
     const gameFrame = document.getElementById('gameFrame');
     const closeModal = document.getElementById('closeModal');
     const fullscreenBtn = document.getElementById('fullscreenBtn');
-
-    const searchInput = document.getElementById('q');
 
     const settingsModal = document.getElementById('settingsModal');
     const closeSettings = document.getElementById('closeSettings');
@@ -434,7 +400,7 @@
         .forEach(item => grid.appendChild(createCard(item)));
     }
 
-    /* CREATE A CARD */
+    /* CREATE CARD */
     function createCard(item) {
       const el = document.createElement('article');
       el.className = 'card';
@@ -496,7 +462,7 @@
       if (!document.fullscreenElement) modal.style.padding = "";
     });
 
-    /* TAB LOGIC */
+    /* TAB LOGIC (NO MORE HERO) */
 
     homeTab.onclick = () => {
       lastActiveTab = "home";
@@ -506,9 +472,10 @@
       appsTab.classList.remove('active');
       unlockerTab.classList.remove('active');
 
+      /* Show only home */
       homeSection.style.display = "block";
-      gameHero.style.display = "none";
       grid.style.display = "none";
+      searchContainer.style.display = "none";
       gamesCountElement.style.display = "none";
 
       renderFeatured();
@@ -523,8 +490,8 @@
       unlockerTab.classList.remove('active');
 
       homeSection.style.display = "none";
-      gameHero.style.display = "block";
       grid.style.display = "grid";
+      searchContainer.style.display = "flex";
       gamesCountElement.style.display = "inline-block";
 
       loadGames();
@@ -539,8 +506,8 @@
       unlockerTab.classList.remove('active');
 
       homeSection.style.display = "none";
-      gameHero.style.display = "block";
       grid.style.display = "grid";
+      searchContainer.style.display = "flex";
       gamesCountElement.style.display = "inline-block";
 
       loadApps();
@@ -556,7 +523,7 @@
       gameFrame.src = "https://ihce0h92o3nndk0.pages.dev/";
     };
 
-    /* SEARCH */
+    /* SEARCH WORKS IN BOTH TABS */
     searchInput?.addEventListener('input', () => {
       if (lastActiveTab === "games") render(GAMES);
       if (lastActiveTab === "apps") render(APPS);
