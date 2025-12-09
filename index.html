@@ -357,252 +357,217 @@
       </button>
     </div>
   </div>
-  <script>
-    /* ELEMENTS */
-    const gamesTab = document.getElementById('gamesTab');
-    const appsTab = document.getElementById('appsTab');
-    const unlockerTab = document.getElementById('unlockerTab');
+<script>
+/* =====================
+   ELEMENTS
+===================== */
+const gamesTab = document.getElementById('gamesTab');
+const appsTab = document.getElementById('appsTab');
+const unlockerTab = document.getElementById('unlockerTab');
 
-    const grid = document.getElementById('grid');
-    const featuredGrid = document.getElementById('featuredGrid');
+const grid = document.getElementById('grid');
+const searchContainer = document.getElementById('searchContainer');
+const searchInput = document.getElementById('q');
 
-    const searchContainer = document.getElementById('searchContainer');
-    const searchInput = document.getElementById('q');
+const modal = document.getElementById('modal');
+const gameFrame = document.getElementById('gameFrame');
+const closeModal = document.getElementById('closeModal');
+const fullscreenBtn = document.getElementById('fullscreenBtn');
 
-    const modal = document.getElementById('modal');
-    const gameFrame = document.getElementById('gameFrame');
-    const closeModal = document.getElementById('closeModal');
-    const fullscreenBtn = document.getElementById('fullscreenBtn');
+const settingsModal = document.getElementById('settingsModal');
+const closeSettings = document.getElementById('closeSettings');
+const settingsButton = document.getElementById('settingsButton');
 
-    const settingsModal = document.getElementById('settingsModal');
-    const closeSettings = document.getElementById('closeSettings');
-    const settingsButton = document.getElementById('settingsButton');
+const gamesCountElement = document.getElementById('gamesCount');
+const mainHero = document.getElementById('mainHero');
 
-    const gamesCountElement = document.getElementById('gamesCount');
+let lastActiveTab = "games";
+let GAMES = [];
+let APPS = [];
 
-    const mainHero = document.getElementById('mainHero');
-
-    let lastActiveTab = "games";
-    let GAMES = [];
-    let APPS = [];
-
-
-    /* LOAD GAMES */
-    function loadGames() {
-      fetch('arcade_data.json')
-        .then(r => r.json())
-        .then(data => {
-          GAMES = data.games || [];
-          render(GAMES);
-          updateCount();
-        });
-    }
-
-    /* LOAD APPS */
-    function loadApps() {
-      fetch('apps_data.json')
-        .then(r => r.json())
-        .then(data => {
-          APPS = data.apps || [];
-          render(APPS);
-          updateCount();
-        });
-    }
-
-    /* RENDER GRID */
-    function render(items) {
-      const q = searchInput.value.toLowerCase();
-      grid.innerHTML = "";
-
-      items
-        .filter(item => item.title.toLowerCase().includes(q))
-        .forEach(item => grid.appendChild(createCard(item)));
-    }
-
-    /* CREATE CARD */
-    function createCard(item) {
-      const el = document.createElement('article');
-      el.className = 'card';
-
-      const img = document.createElement('img');
-      img.className = 'thumb';
-      img.src = item.thumb;
-      img.loading = "lazy";
-
-      const meta = document.createElement('div');
-      meta.className = 'meta';
-
-      const h3 = document.createElement('h3');
-      h3.textContent = item.title;
-
-      const btn = document.createElement('button');
-      btn.className = 'play';
-      btn.textContent = 'Play';
-      btn.onclick = () => openItem(item);
-
-      meta.appendChild(h3);
-      meta.appendChild(btn);
-      el.appendChild(img);
-      el.appendChild(meta);
-
-      return el;
-    }
-
-    /* OPEN GAME */
-    function openItem(item) {
-      modal.style.display = 'flex';
-
-      fetch(item.src)
-        .then(r => r.text())
-        .then(html => {
-          gameFrame.contentDocument.open();
-          gameFrame.contentDocument.write(html);
-          gameFrame.contentDocument.close();
-        })
-        .catch(() => {
-          gameFrame.contentDocument.open();
-          gameFrame.contentDocument.write(`<h2 style="color:white;padding:20px;">Failed to load game</h2>`);
-          gameFrame.contentDocument.close();
-        });
-    }
-
-    /* CLOSE MODAL */
-    closeModal.onclick = () => {
-      modal.style.display = 'none';
-      gameFrame.src = "";
-    };
-
-    /* FULLSCREEN */
-    fullscreenBtn.onclick = () => {
-      if (gameFrame.requestFullscreen) gameFrame.requestFullscreen();
-    };
-
-    document.addEventListener('fullscreenchange', () => {
-      if (!document.fullscreenElement) modal.style.padding = "";
+/* =====================
+   LOADERS
+===================== */
+function loadGames() {
+  fetch('arcade_data.json')
+    .then(r => r.json())
+    .then(data => {
+      GAMES = data.games || [];
+      render(GAMES);
+      updateCount();
     });
+}
 
-
-    /* ============================
-       TAB SWITCHING
-       ============================ */
-
-    /* GAMES TAB */
-    gamesTab.onclick = () => {
-      lastActiveTab = "games";
-
-      gamesTab.classList.add('active');
-      appsTab.classList.remove('active');
-      unlockerTab.classList.remove('active');
-
-      /* SHOW HERO + SEARCH */
-      mainHero.style.display = "block";
-      searchContainer.style.display = "flex";
-
-      /* SHOW GRID */
-      grid.style.display = "grid";
-      gamesCountElement.style.display = "inline-block";
-
-      loadGames();
-    };
-
-    /* APPS TAB */
-    appsTab.onclick = () => {
-      lastActiveTab = "apps";
-
-      appsTab.classList.add('active');
-      gamesTab.classList.remove('active');
-      unlockerTab.classList.remove('active');
-
-      /* ALSO SHOW THE HERO ON APPS */
-      mainHero.style.display = "block";
-
-      searchContainer.style.display = "flex";
-      grid.style.display = "grid";
-      gamesCountElement.style.display = "inline-block";
-
-      loadApps();
-    };
-
-    /* UNLOCKER TAB */
-    unlockerTab.onclick = () => {
-      unlockerTab.classList.add('active');
-      gamesTab.classList.remove('active');
-      appsTab.classList.remove('active');
-
-      /* hide search + hero */
-      mainHero.style.display = "none";
-      searchContainer.style.display = "none";
-      grid.style.display = "none";
-
-      modal.style.display = 'flex';
-      gameFrame.src = "https://ihce0h92o3nndk0.pages.dev/";
-    };
-
-
-    /* SEARCH */
-    searchInput?.addEventListener('input', () => {
-      if (lastActiveTab === "games") render(GAMES);
-      if (lastActiveTab === "apps") render(APPS);
+function loadApps() {
+  fetch('apps_data.json')
+    .then(r => r.json())
+    .then(data => {
+      APPS = data.apps || [];
+      render(APPS);
+      updateCount();
     });
+}
 
-    /* COUNT */
-    function updateCount() {
-      gamesCountElement.textContent =
-        "Count: " + (lastActiveTab === "games" ? GAMES.length : APPS.length);
-    }
+/* =====================
+   RENDERING
+===================== */
+function render(items) {
+  const q = searchInput.value.toLowerCase();
+  grid.innerHTML = "";
 
+  items
+    .filter(i => i.title.toLowerCase().includes(q))
+    .forEach(i => grid.appendChild(createCard(i)));
+}
 
+function createCard(item) {
+  const el = document.createElement('article');
+  el.className = 'card';
+
+  el.innerHTML = `
+    <img class="thumb" src="${item.thumb}" loading="lazy">
+    <div class="meta">
+      <h3>${item.title}</h3>
+      <button class="play">Play</button>
+    </div>
+  `;
+
+  el.querySelector('.play').onclick = () => openItem(item);
+  return el;
+}
+
+/* =====================
+   MODAL
+===================== */
+function openItem(item) {
+  modal.style.display = 'flex';
+
+  fetch(item.src)
+    .then(r => r.text())
+    .then(html => {
+      gameFrame.contentDocument.open();
+      gameFrame.contentDocument.write(html);
+      gameFrame.contentDocument.close();
+    })
+    .catch(() => {
+      gameFrame.src = item.src;
+    });
+}
+
+closeModal.onclick = () => {
+  modal.style.display = 'none';
+  gameFrame.src = '';
+};
+
+fullscreenBtn.onclick = () => {
+  gameFrame.requestFullscreen?.();
+};
+
+/* =====================
+   TABS
+===================== */
+function activateTab(tab) {
+  [gamesTab, appsTab, unlockerTab].forEach(b => b.classList.remove('active'));
+  tab.classList.add('active');
+}
+
+gamesTab.onclick = () => {
+  lastActiveTab = "games";
+  activateTab(gamesTab);
+
+  mainHero.style.display = "block";
+  searchContainer.style.display = "flex";
+  grid.style.display = "grid";
+  gamesCountElement.style.display = "inline-block";
+
+  loadGames();
+};
+
+appsTab.onclick = () => {
+  lastActiveTab = "apps";
+  activateTab(appsTab);
+
+  mainHero.style.display = "block";
+  searchContainer.style.display = "flex";
+  grid.style.display = "grid";
+  gamesCountElement.style.display = "inline-block";
+
+  loadApps();
+};
+
+unlockerTab.onclick = () => {
+  activateTab(unlockerTab);
+
+  mainHero.style.display = "none";
+  searchContainer.style.display = "none";
+  grid.style.display = "none";
+  gamesCountElement.style.display = "none";
+
+  modal.style.display = "flex";
+  gameFrame.src = "https://ihce0h92o3nndk0.pages.dev/";
+};
+
+/* =====================
+   SEARCH
+===================== */
+searchInput.addEventListener('input', () => {
+  if (lastActiveTab === "games") render(GAMES);
+  if (lastActiveTab === "apps") render(APPS);
+});
+
+/* =====================
+   COUNT
+===================== */
+function updateCount() {
+  gamesCountElement.textContent =
+    "Count: " + (lastActiveTab === "games" ? GAMES.length : APPS.length);
+}
+
+/* =====================
+   SETTINGS
+===================== */
 settingsButton.onclick = () => {
   settingsModal.style.display = 'flex';
-  requestAnimationFrame(() => {
-    settingsModal.classList.add('show');
-  });
+  requestAnimationFrame(() => settingsModal.classList.add('show'));
 };
 
 closeSettings.onclick = () => {
   settingsModal.classList.remove('show');
-  setTimeout(() => {
-    settingsModal.style.display = 'none';
-  }, 250);
+  setTimeout(() => settingsModal.style.display = 'none', 250);
 };
 
+/* =====================
+   THEMES
+===================== */
+fetch('themes.json')
+  .then(r => r.json())
+  .then(data => {
+    const options = document.getElementById('themeOptions');
+    data.themes.forEach(theme => {
+      const div = document.createElement('div');
+      div.className = 'theme-option';
+      div.textContent = theme.name;
 
-    closeSettings.onclick = () => {
-      settingsModal.classList.remove('show');
-      setTimeout(() => settingsModal.style.display = 'none', 250);
-    };
+      div.onclick = () => {
+        for (const key in theme) {
+          document.documentElement.style.setProperty(key, theme[key]);
+        }
+        document
+          .querySelectorAll('.theme-option')
+          .forEach(o => o.classList.remove('active'));
+        div.classList.add('active');
+      };
+      options.appendChild(div);
+    });
+  });
 
-
-    /* THEMES */
-    fetch('themes.json')
-      .then(r => r.json())
-      .then(data => {
-        const options = document.getElementById('themeOptions');
-        data.themes.forEach(theme => {
-          const div = document.createElement('div');
-          div.className = 'theme-option';
-          div.textContent = theme.name;
-
-          div.onclick = () => {
-            for (const key in theme) {
-              document.documentElement.style.setProperty(key, theme[key]);
-            }
-            document.querySelectorAll('.theme-option')
-              .forEach(o => o.classList.remove('active'));
-            div.classList.add('active');
-          };
-
-          options.appendChild(div);
-        });
-      });
-
-    /* INITIAL LOAD */
-    mainHero.style.display = "block";
-    searchContainer.style.display = "flex";
-    grid.style.display = "grid";
-    loadGames();
-    updateCount();
-  </script>
-
+/* =====================
+   INITIAL
+===================== */
+mainHero.style.display = "block";
+searchContainer.style.display = "flex";
+grid.style.display = "grid";
+loadGames();
+</script>
 </body>
-</html>
+<html>
