@@ -164,7 +164,7 @@
       "title": "Escape Road",
       "src": "https://cdn.jsdelivr.net/gh/gn-math/html@main/264.html",
       "thumb": "https://cdn.jsdelivr.net/gh/gn-math/covers@main/264.png"
-    },
+    }, 
    {
       "title": "Retro Bowl",
       "src": "https://cdn.jsdelivr.net/gh/gn-math/html@main/33.html",
@@ -224,6 +224,11 @@
       "title": "Five Nights at Candy's 2",
       "src": "https://cdn.jsdelivr.net/gh/gn-math/html@main/504.html",
       "thumb": "https://cdn.jsdelivr.net/gh/gn-math/covers@main/504.png"
+    },
+    {
+      "title": "Sad Satan",
+      "src": "https://raw.githubusercontent.com/ten8mystery/Diamond-Backend/refs/heads/main/sadsatan.html",
+      "thumb": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2686080/05d529dcd8cbfbd8528c23657af6d21d9ba9130d/capsule_616x353.jpg?t=1762161764"
     },
    {
       "title": "Cuphead",
