@@ -28,7 +28,6 @@
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
     }
-
     /* HUD */
     .hud {
       position: fixed;
@@ -50,14 +49,7 @@
     }
 
     .logo { display:flex; align-items:center; gap:12px; }
-
-    .logo img {
-      width:42px;
-      height:42px;
-      border-radius:10px;
-      box-shadow:0 4px 18px rgba(147,51,234,0.4);
-    }
-
+    .logo img { width:42px; height:42px; border-radius:10px; }
     .logo h1 { font-size:20px; font-weight:700; margin-bottom:-4px; }
     .logo small { font-size:12px; color:var(--text-soft); }
 
@@ -73,55 +65,12 @@
       cursor:pointer;
       transition:150ms;
     }
-
-    .hud button:hover {
-      background:rgba(255,255,255,0.10);
-      transform:translateY(-1px);
-    }
-
+    .hud button:hover { background:rgba(255,255,255,0.10); transform:translateY(-1px); }
     .hud button.active {
       background:linear-gradient(135deg, hsl(var(--accent1)), hsl(var(--accent2)));
       box-shadow:0 6px 20px rgba(0,0,0,0.35);
     }
-
-    .pill {
-      padding:6px 12px;
-      background:rgba(255,255,255,0.06);
-      border-radius:999px;
-      font-size:13px;
-    }
-    /* SEARCH */
-    #searchContainer {
-      margin-top:20px;
-      display:none;
-      justify-content:center;
-    }
-
-    .search {
-      width:680px;
-      max-width:92%;
-      padding:14px 20px;
-      border-radius:999px;
-      display:flex;
-      background:rgba(255,255,255,0.05);
-      border:1px solid rgba(255,255,255,0.05);
-      box-shadow:0 0 8px rgba(99,102,241,0.18);
-      transition:150ms;
-    }
-
-    .search:focus-within {
-      border:1px solid rgba(99,102,241,0.45);
-      box-shadow:0 0 14px rgba(99,102,241,0.35);
-    }
-
-    .search input {
-      flex:1;
-      background:transparent;
-      border:none;
-      outline:none;
-      font-size:16px;
-      color:var(--text);
-    }
+    .pill { padding:6px 12px; background:rgba(255,255,255,0.06); border-radius:999px; font-size:13px; }
 
     /* GRID */
     .grid {
@@ -132,45 +81,37 @@
       max-width:1250px;
       margin:auto;
     }
-
-    .card {
-      background:rgba(255,255,255,0.03);
-      border:1px solid rgba(255,255,255,0.05);
-      border-radius:var(--radius);
-      height:300px;
-      padding:12px;
-      transition:150ms;
-      box-shadow:0 2px 6px rgba(0,0,0,0.25);
-    }
-
-    .card:hover {
-      transform:translateY(-3px);
-      box-shadow:0 4px 10px rgba(0,0,0,0.22);
-    }
-
-    .thumb {
-      width:100%;
-      height:155px;
-      border-radius:10px;
-      object-fit:cover;
-      box-shadow:0 3px 12px rgba(0,0,0,0.28);
-    }
-
+    .card { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.05); border-radius:var(--radius); height:300px; padding:12px; }
+    .thumb { width:100%; height:155px; border-radius:10px; object-fit:cover; }
     .meta { text-align:center; padding-top:14px; }
     .meta h3 { font-size:18px; margin-bottom:10px; }
-
-    .play {
-      padding:10px 16px;
-      border:none;
-      border-radius:10px;
-      background:linear-gradient(90deg, hsl(var(--accent1)), hsl(var(--accent2)));
-      color:white;
-      cursor:pointer;
-      transition:150ms;
+    .play { padding:10px 16px; border:none; border-radius:10px; background:linear-gradient(90deg, hsl(var(--accent1)), hsl(var(--accent2))); color:white; cursor:pointer; }
+    /* SETTINGS MODAL FIX */
+    #settingsModal {
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.55);
+      z-index:60;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      visibility:hidden;
+      opacity:0;
+      transition:opacity 250ms ease, visibility 250ms ease;
     }
-
-    .play:hover { transform:translateY(-2px); }
-    /* SETTINGS BUTTONS */
+    #settingsModal.show {
+      visibility:visible;
+      opacity:1;
+    }
+    #settingsModal > div {
+      background:#111;
+      padding:30px;
+      border-radius:12px;
+      width:92%;
+      max-width:420px;
+      border:1px solid rgba(255,255,255,0.08);
+      text-align:center;
+    }
     .theme-option {
       padding: 12px 16px;
       margin: 8px 0;
@@ -178,34 +119,15 @@
       border: 1px solid rgba(255,255,255,0.08);
       border-radius: 10px;
       cursor: pointer;
-      transition: 150ms;
       font-weight: 600;
     }
-
-    .theme-option:hover {
-      background: rgba(255,255,255,0.12);
-    }
-
+    .theme-option:hover { background: rgba(255,255,255,0.12); }
     .theme-option.active {
       background: linear-gradient(135deg, hsl(var(--accent1)), hsl(var(--accent2)));
       border-color: rgba(255,255,255,0.25);
-      box-shadow: 0 0 12px rgba(0,0,0,0.4);
-    }
-
-    #settingsModal.show {
-      opacity: 1;
-    }
-
-    #settingsModal.show > div {
-      transform: scale(1);
-    }
-
-    #settingsModal > div {
-      transform: scale(0.95);
     }
   </style>
 </head>
-
 <body>
 
   <!-- TOP BAR -->
@@ -261,6 +183,7 @@
     <!-- GRID -->
     <section class="grid" id="grid" style="display:none;"></section>
   </main>
+
   <!-- GAME MODAL -->
   <div id="modal" style="
     display:none;
@@ -315,27 +238,8 @@
   </div>
 
   <!-- SETTINGS MODAL -->
-  <div id="settingsModal" style="
-    display:none;
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.55);
-    z-index:60;
-    justify-content:center;
-    align-items:center;
-    transition:250ms;
-    opacity:0;
-  ">
-    <div style="
-      background:#111;
-      padding:30px;
-      border-radius:12px;
-      width:92%;
-      max-width:420px;
-      border:1px solid rgba(255,255,255,0.08);
-      text-align:center;
-      transition:300ms;
-    ">
+  <div id="settingsModal">
+    <div>
       <h2 style="margin-bottom:10px;">Settings</h2>
       <div id="themeOptions"></div>
 
@@ -474,52 +378,38 @@
       if (!document.fullscreenElement) modal.style.padding = "";
     });
 
-    /* ============================
-       TAB SWITCHING
-       ============================ */
-
-    /* GAMES TAB */
+    /* TAB SWITCHING */
     gamesTab.onclick = () => {
       lastActiveTab = "games";
-
       gamesTab.classList.add('active');
       appsTab.classList.remove('active');
       unlockerTab.classList.remove('active');
-
       mainHero.style.display = "block";
       searchContainer.style.display = "flex";
       grid.style.display = "grid";
       gamesCountElement.style.display = "inline-block";
-
       loadGames();
     };
 
-    /* APPS TAB */
     appsTab.onclick = () => {
       lastActiveTab = "apps";
-
       appsTab.classList.add('active');
       gamesTab.classList.remove('active');
       unlockerTab.classList.remove('active');
-
       mainHero.style.display = "block";
       searchContainer.style.display = "flex";
       grid.style.display = "grid";
       gamesCountElement.style.display = "inline-block";
-
       loadApps();
     };
 
-    /* UNLOCKER TAB */
     unlockerTab.onclick = () => {
       unlockerTab.classList.add('active');
       gamesTab.classList.remove('active');
       appsTab.classList.remove('active');
-
       mainHero.style.display = "none";
       searchContainer.style.display = "none";
       grid.style.display = "none";
-
       modal.style.display = 'flex';
       gameFrame.src = "https://ihce0h92o3nndk0.pages.dev/";
     };
@@ -538,17 +428,11 @@
 
     /* SETTINGS MODAL */
     settingsButton.onclick = () => {
-      settingsModal.style.display = 'flex';
-      requestAnimationFrame(() => {
-        settingsModal.classList.add('show');
-      });
+      settingsModal.classList.add('show');
     };
 
     closeSettings.onclick = () => {
       settingsModal.classList.remove('show');
-      setTimeout(() => {
-        settingsModal.style.display = 'none';
-      }, 250);
     };
 
     /* THEMES */
@@ -556,23 +440,29 @@
       .then(r => r.json())
       .then(data => {
         const options = document.getElementById('themeOptions');
+        if (!data.themes || data.themes.length === 0) {
+          options.innerHTML = "<p style='color:white'>No themes available</p>";
+          return;
+        }
         data.themes.forEach(theme => {
           const div = document.createElement('div');
           div.className = 'theme-option';
           div.textContent = theme.name;
-
           div.onclick = () => {
             for (const key in theme) {
-              if (key === "name") continue; // skip name
+              if (key === "name") continue;
               document.documentElement.style.setProperty(key, theme[key]);
             }
             document.querySelectorAll('.theme-option')
               .forEach(o => o.classList.remove('active'));
             div.classList.add('active');
           };
-
           options.appendChild(div);
         });
+      })
+      .catch(() => {
+        document.getElementById('themeOptions').innerHTML =
+          "<p style='color:white'>Failed to load themes</p>";
       });
 
     /* INITIAL LOAD */
